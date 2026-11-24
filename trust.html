@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ShadowProxy trust & security — how we handle negotiation data, encryption, access, and privacy.">
+    <title>Trust &amp; Security · ShadowProxy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --canvas: #ffffff;
+            --canvas-soft: #f7f7f8;
+            --ink: #0d0d0d;
+            --muted: #6e6e80;
+            --hairline: #e5e5e8;
+            --accent: #10a37f;
+            --accent-soft: #e7f6f1;
+            --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+            --radius: 14px;
+            --radius-pill: 999px;
+            --font: 'Instrument Sans', sans-serif;
+            --max: 860px;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: var(--canvas);
+            color: var(--ink);
+            font-family: var(--font);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: inherit; text-decoration: none; }
+        .atmosphere {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 70% 40% at 50% -5%, rgba(16,163,127,0.08), transparent 55%),
+                var(--canvas);
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.5rem;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--hairline);
+        }
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-weight: 600;
+        }
+        .brand-mark {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            background: var(--ink);
+            position: relative;
+        }
+        .brand-mark::after {
+            content: "";
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            border-right-color: transparent;
+            transform: rotate(-45deg);
+        }
+        .nav a {
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 500;
+            margin-left: 0.75rem;
+        }
+        .nav a:hover { color: var(--ink); }
+        .nav .primary {
+            background: var(--ink);
+            color: #fff !important;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-pill);
+        }
+        main {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.7rem;
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 550;
+            margin-bottom: 1rem;
+        }
+        .eyebrow i {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: inline-block;
+        }
+        h1 {
+            margin: 0 0 0.75rem;
+            font-size: clamp(1.9rem, 4vw, 2.5rem);
+            font-weight: 600;
+            letter-spacing: -0.035em;
+            line-height: 1.15;
+        }
+        .lead {
+            margin: 0 0 2.25rem;
+            color: var(--muted);
+            font-size: 1.08rem;
+            max-width: 38rem;
+        }
+        h2 {
+            margin: 2.25rem 0 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        p, li { color: var(--muted); font-size: 1.02rem; }
+        p { margin: 0 0 1rem; }
+        p strong, li strong { color: var(--ink); font-weight: 600; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            margin: 1.25rem 0 0.5rem;
+        }
+        .card {
+            padding: 1.15rem 1.2rem;
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius);
+            background: #fff;
+            box-shadow: var(--shadow);
+        }
+        .card h3 {
+            margin: 0 0 0.4rem;
+            font-size: 1.02rem;
+            font-weight: 600;
+        }
+        .card p { margin: 0; font-size: 0.92rem; }
+        .note {
+            margin-top: 2rem;
+            padding: 1.1rem 1.2rem;
+            border-radius: 12px;
+            background: var(--accent-soft);
+            color: #0d5c48;
+            font-size: 0.95rem;
+        }
+        .note a {
+            color: #0d5c48;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        footer {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 1.5rem;
+            border-top: 1px solid var(--hairline);
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            color: #9a9aa6;
+            font-size: 0.85rem;
+        }
+        footer nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+        footer a:hover { color: var(--ink); }
+        @media (max-width: 700px) {
+            .grid { grid-template-columns: 1fr; }
+            .nav a:not(.primary) { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <header>
+        <a class="brand" href="index.html">
+            <span class="brand-mark" aria-hidden="true"></span>
+            ShadowProxy
+        </a>
+        <nav class="nav">
+            <a href="about.html">About</a>
+            <a href="index.html#contact" class="primary">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="eyebrow"><i></i> Trust &amp; security</div>
+        <h1>Deal context is sensitive. We treat it that way.</h1>
+        <p class="lead">
+            Negotiation briefs can include term sheets, pricing, and strategy.
+            ShadowProxy is early-stage software; our security posture starts with
+            clear data handling, encryption, and least-privilege access.
+        </p>
+
+        <h2>What we collect</h2>
+        <p>
+            <strong>Waitlist / demo emails</strong> and the negotiation context you send us.
+            When the product is in use: scenario inputs you provide to run a simulation,
+            and generated briefs. We do not sell personal or deal data.
+        </p>
+
+        <div class="grid">
+            <article class="card">
+                <h3>Encryption</h3>
+                <p>TLS in transit. At rest, customer and scenario data are planned for encrypted storage (e.g. S3 / DB with KMS) as we harden the AWS stack.</p>
+            </article>
+            <article class="card">
+                <h3>Access control</h3>
+                <p>Least-privilege IAM for cloud workers. No long-lived keys in the browser. Human access to inquiry mail is limited to the founding team.</p>
+            </article>
+            <article class="card">
+                <h3>Data separation</h3>
+                <p>Raw customer deal text is kept separate from any training corpora. We do not use your private scenarios to train public models without explicit consent.</p>
+            </article>
+            <article class="card">
+                <h3>Retention</h3>
+                <p>Inquiry emails are kept only as long as needed to respond and operate early access, then deleted or anonymized.</p>
+            </article>
+        </div>
+
+        <h2>Compliance path</h2>
+        <p>
+            We are <strong>pre-incorporation / early prototype</strong>—not SOC 2 certified yet.
+            Near-term focus: encryption defaults, audit logging on the AWS data plane,
+            and written retention rules before enterprise pilots.
+        </p>
+
+        <h2>Your controls</h2>
+        <ul>
+            <li>Request access, correction, or deletion of personal data by email.</li>
+            <li>Ask us not to retain a scenario after a demo.</li>
+            <li>Review our legal pages before sharing sensitive materials.</li>
+        </ul>
+
+        <p class="note">
+            Policies in force today:
+            <a href="privacy.html">Privacy Policy</a> ·
+            <a href="terms.html">Terms of Use</a> ·
+            architecture notes on <a href="technology.html">Technology</a>.
+            Questions: <a href="mailto:intelligence@shadowproxy.space">intelligence@shadowproxy.space</a>
+        </p>
+    </main>
+
+    <footer>
+        <p>© ShadowProxy · Founded June 2026</p>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="roadmap.html">Roadmap</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+        </nav>
+    </footer>
+</body>
+</html>

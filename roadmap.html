@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ShadowProxy product roadmap — from early prototype to private beta and GA.">
+    <title>Roadmap · ShadowProxy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --canvas: #ffffff;
+            --canvas-soft: #f7f7f8;
+            --ink: #0d0d0d;
+            --muted: #6e6e80;
+            --hairline: #e5e5e8;
+            --accent: #10a37f;
+            --accent-soft: #e7f6f1;
+            --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+            --radius: 14px;
+            --radius-pill: 999px;
+            --font: 'Instrument Sans', sans-serif;
+            --max: 860px;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: var(--canvas);
+            color: var(--ink);
+            font-family: var(--font);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: inherit; text-decoration: none; }
+        .atmosphere {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 70% 40% at 50% -5%, rgba(16,163,127,0.08), transparent 55%),
+                var(--canvas);
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.5rem;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--hairline);
+        }
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-weight: 600;
+        }
+        .brand-mark {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            background: var(--ink);
+            position: relative;
+        }
+        .brand-mark::after {
+            content: "";
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            border-right-color: transparent;
+            transform: rotate(-45deg);
+        }
+        .nav a {
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 500;
+            margin-left: 0.75rem;
+        }
+        .nav a:hover { color: var(--ink); }
+        .nav .primary {
+            background: var(--ink);
+            color: #fff !important;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-pill);
+        }
+        main {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.7rem;
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 550;
+            margin-bottom: 1rem;
+        }
+        .eyebrow i {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: inline-block;
+        }
+        h1 {
+            margin: 0 0 0.75rem;
+            font-size: clamp(1.9rem, 4vw, 2.5rem);
+            font-weight: 600;
+            letter-spacing: -0.035em;
+            line-height: 1.15;
+        }
+        .lead {
+            margin: 0 0 2.25rem;
+            color: var(--muted);
+            font-size: 1.08rem;
+            max-width: 38rem;
+        }
+        .timeline {
+            display: grid;
+            gap: 0.85rem;
+        }
+        .phase {
+            padding: 1.35rem 1.35rem;
+            border: 1px solid var(--hairline);
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: var(--shadow);
+        }
+        .phase.now {
+            border-color: rgba(16,163,127,0.35);
+            background: linear-gradient(180deg, var(--accent-soft), #fff 55%);
+        }
+        .phase .tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .phase h2 {
+            margin: 0 0 0.45rem;
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        .phase p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        .phase ul {
+            margin: 0.75rem 0 0;
+            padding-left: 1.1rem;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+        .phase li { margin: 0.25rem 0; }
+        .honest {
+            margin-top: 2rem;
+            padding: 1.1rem 1.2rem;
+            border-radius: 12px;
+            background: var(--canvas-soft);
+            border: 1px solid var(--hairline);
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        footer {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 1.5rem;
+            border-top: 1px solid var(--hairline);
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            color: #9a9aa6;
+            font-size: 0.85rem;
+        }
+        footer nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+        footer a:hover { color: var(--ink); }
+        @media (max-width: 700px) {
+            .nav a:not(.primary) { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <header>
+        <a class="brand" href="index.html">
+            <span class="brand-mark" aria-hidden="true"></span>
+            ShadowProxy
+        </a>
+        <nav class="nav">
+            <a href="about.html">About</a>
+            <a href="index.html#waitlist" class="primary">Get early access</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="eyebrow"><i></i> Product roadmap</div>
+        <h1>From rehearsal prototype to a product teams can trust</h1>
+        <p class="lead">
+            Founded June 2026. We are early—honest about stage, clear about what ships next.
+        </p>
+
+        <div class="timeline">
+            <article class="phase now">
+                <div class="tag">Now · Q2–Q3 2026</div>
+                <h2>Early prototype</h2>
+                <p>Public site, waitlist, and simulation-backed briefs for design conversations.</p>
+                <ul>
+                    <li>Landing + product preview</li>
+                    <li>Scenario → ranked moves loop (core engine)</li>
+                    <li>No public customers or paid users yet</li>
+                </ul>
+            </article>
+            <article class="phase">
+                <div class="tag">Next</div>
+                <h2>Design partners</h2>
+                <p>Closed pilots with technical founders and BD leads on real negotiations.</p>
+                <ul>
+                    <li>Live walkthrough demos</li>
+                    <li>Feedback on brief quality and workflow</li>
+                    <li>Hardening data handling for shared scenarios</li>
+                </ul>
+            </article>
+            <article class="phase">
+                <div class="tag">Then</div>
+                <h2>Private beta</h2>
+                <p>Self-serve or invite-only access with accounts and saved scenarios.</p>
+                <ul>
+                    <li>Auth, workspace, scenario history</li>
+                    <li>AWS-backed train / sim / infer path</li>
+                    <li>First measurable pilot outcomes (replacing internal examples)</li>
+                </ul>
+            </article>
+            <article class="phase">
+                <div class="tag">Later</div>
+                <h2>GA &amp; incorporation</h2>
+                <p>Broader launch once quality and security bars clear for paying teams.</p>
+                <ul>
+                    <li>Company registration complete</li>
+                    <li>Packaged plans and support</li>
+                    <li>Enterprise-ready trust controls</li>
+                </ul>
+            </article>
+        </div>
+
+        <p class="honest">
+            Dates are directional. We will not invent traction: when pilots produce real results,
+            they replace the internal worked examples on the homepage.
+            Cloud build order lives on <a href="technology.html" style="color:var(--ink);text-decoration:underline;text-underline-offset:2px;">Technology</a>.
+        </p>
+    </main>
+
+    <footer>
+        <p>© ShadowProxy · Founded June 2026</p>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="trust.html">Trust</a>
+            <a href="about.html">About</a>
+            <a href="technology.html">Technology</a>
+        </nav>
+    </footer>
+</body>
+</html>

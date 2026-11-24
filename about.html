@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About ShadowProxy — Negotiation / Strategy AI founded by Zhuoya Zhao. Multi-agent RL and game theory for high-stakes conversations.">
+    <title>About · ShadowProxy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --canvas: #ffffff;
+            --canvas-soft: #f7f7f8;
+            --ink: #0d0d0d;
+            --muted: #6e6e80;
+            --hairline: #e5e5e8;
+            --accent: #10a37f;
+            --accent-soft: #e7f6f1;
+            --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+            --radius: 14px;
+            --radius-pill: 999px;
+            --font: 'Instrument Sans', sans-serif;
+            --max: 860px;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: var(--canvas);
+            color: var(--ink);
+            font-family: var(--font);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: inherit; text-decoration: none; }
+        .atmosphere {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 70% 40% at 50% -5%, rgba(16,163,127,0.08), transparent 55%),
+                var(--canvas);
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.5rem;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--hairline);
+        }
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-weight: 600;
+        }
+        .brand-mark {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            background: var(--ink);
+            position: relative;
+        }
+        .brand-mark::after {
+            content: "";
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            border-right-color: transparent;
+            transform: rotate(-45deg);
+        }
+        .nav a {
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 500;
+            margin-left: 0.75rem;
+        }
+        .nav a:hover { color: var(--ink); }
+        .nav .primary {
+            background: var(--ink);
+            color: #fff !important;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-pill);
+        }
+        main {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.7rem;
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 550;
+            margin-bottom: 1rem;
+        }
+        .eyebrow i {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: inline-block;
+        }
+        h1 {
+            margin: 0 0 0.75rem;
+            font-size: clamp(1.9rem, 4vw, 2.5rem);
+            font-weight: 600;
+            letter-spacing: -0.035em;
+            line-height: 1.15;
+        }
+        .lead {
+            margin: 0 0 2.25rem;
+            color: var(--muted);
+            font-size: 1.08rem;
+            max-width: 38rem;
+        }
+        .meta-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 2.75rem;
+        }
+        .meta-card {
+            padding: 1rem 1.1rem;
+            border: 1px solid var(--hairline);
+            border-radius: 12px;
+            background: #fff;
+        }
+        .meta-card .k {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.35rem;
+        }
+        .meta-card .v {
+            font-size: 0.95rem;
+            font-weight: 550;
+            letter-spacing: -0.01em;
+        }
+        h2 {
+            margin: 2.5rem 0 0.75rem;
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        p {
+            margin: 0 0 1rem;
+            color: var(--muted);
+            font-size: 1.02rem;
+        }
+        p strong { color: var(--ink); font-weight: 600; }
+        .founder {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1.25rem;
+            align-items: start;
+            padding: 1.4rem;
+            border: 1px solid var(--hairline);
+            border-radius: 18px;
+            background: var(--canvas-soft);
+            box-shadow: var(--shadow);
+        }
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--ink);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+        .founder h3 {
+            margin: 0 0 0.2rem;
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+        .role {
+            margin: 0 0 0.75rem;
+            font-size: 0.88rem;
+            font-weight: 550;
+            color: var(--accent);
+        }
+        .founder p { margin: 0 0 0.85rem; font-size: 0.95rem; }
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+        }
+        .links a {
+            font-size: 0.85rem;
+            font-weight: 550;
+            color: var(--ink);
+            border: 1px solid var(--hairline);
+            background: #fff;
+            padding: 0.4rem 0.75rem;
+            border-radius: var(--radius-pill);
+        }
+        .links a:hover { background: var(--canvas-soft); }
+        .stage {
+            padding: 1.1rem 1.2rem;
+            border-radius: 12px;
+            background: var(--accent-soft);
+            color: #0d5c48;
+            font-size: 0.95rem;
+        }
+        footer {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 1.5rem;
+            border-top: 1px solid var(--hairline);
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            color: #9a9aa6;
+            font-size: 0.85rem;
+        }
+        footer nav { display: flex; gap: 1.25rem; }
+        footer a:hover { color: var(--ink); }
+        @media (max-width: 700px) {
+            .meta-row { grid-template-columns: 1fr; }
+            .founder { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <header>
+        <a class="brand" href="index.html">
+            <span class="brand-mark" aria-hidden="true"></span>
+            ShadowProxy
+        </a>
+        <nav class="nav">
+            <a href="roadmap.html">Roadmap</a>
+            <a href="trust.html">Trust</a>
+            <a href="index.html#contact" class="primary">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="eyebrow"><i></i> About the company</div>
+        <h1>Building Negotiation / Strategy AI</h1>
+        <p class="lead">
+            ShadowProxy helps people rehearse high-stakes conversations before they happen—
+            from fundraising and partnerships to pricing and market entry—
+            using multi-agent reinforcement learning and game theory.
+        </p>
+
+        <div class="meta-row">
+            <div class="meta-card">
+                <div class="k">Founded</div>
+                <div class="v">June 2026</div>
+            </div>
+            <div class="meta-card">
+                <div class="k">Stage</div>
+                <div class="v">Early prototype</div>
+            </div>
+            <div class="meta-card">
+                <div class="k">Entity</div>
+                <div class="v">Pre-incorporation</div>
+            </div>
+        </div>
+
+        <h2>Why we exist</h2>
+        <p>
+            High-stakes conversations—term sheets, partnership pricing, commercial deals—
+            decide whether a product finds its market. Many strong builders still walk into
+            those rooms underprepared: they know the tech, but not how to price it, defend
+            value, or navigate a counterpart who negotiates every day.
+        </p>
+        <p>
+            ShadowProxy exists to give technical founders and deal teams a rehearsal space:
+            describe the situation, simulate likely counters, and leave with ranked next moves—
+            so better products are not underpriced or undersold in the room that matters.
+        </p>
+
+        <h2>Founder</h2>
+        <article class="founder">
+            <div class="avatar" aria-hidden="true">ZZ</div>
+            <div>
+                <h3>Zhuoya Zhao</h3>
+                <p class="role">Founder / CTO</p>
+                <p>
+                    Zhuoya’s research background is in <strong>multi-agent reinforcement learning</strong>
+                    and <strong>game theory</strong>. She trained during her PhD work affiliated with the
+                    Institute of Zoology, Chinese Academy of Sciences, and continued this line of work
+                    at the University of Ottawa.
+                </p>
+                <p>
+                    ShadowProxy applies that research stack to practical negotiation:
+                    adversarial agents, simulated deal paths, and decision support for real conversations.
+                </p>
+                <div class="links">
+                    <a href="https://www.linkedin.com/in/zhuoya-zhao-3a82912aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="https://github.com/Precola" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <a href="mailto:intelligence@shadowproxy.space">Email</a>
+                </div>
+            </div>
+        </article>
+
+        <h2>Where we are now</h2>
+        <p class="stage">
+            We are in an early prototype stage: the product and site are live for early access,
+            and we do not yet have public customers or paid users. Design-partner pilots come next.
+        </p>
+        <p>
+            ShadowProxy is currently <strong>operating as ShadowProxy / pre-incorporation</strong>.
+            Company registration will follow as we move from prototype into private beta.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+            For waitlist, partnerships, or AWS / investor diligence:
+            <a href="mailto:intelligence@shadowproxy.space" style="color:var(--ink);text-decoration:underline;text-underline-offset:2px;">intelligence@shadowproxy.space</a>
+        </p>
+    </main>
+
+    <footer>
+        <p>© ShadowProxy · Founded June 2026</p>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="roadmap.html">Roadmap</a>
+            <a href="technology.html">Technology</a>
+            <a href="trust.html">Trust</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+        </nav>
+    </footer>
+</body>
+</html>

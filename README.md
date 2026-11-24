@@ -6,10 +6,12 @@ Live: [shadowproxy.space](https://shadowproxy.space)
 
 ## Pages
 
-- `index.html` — landing page (Negotiation / Strategy AI)
-- `technology.html` — how we use AWS (train / sim / infer / data)
-- `privacy.html` — privacy policy
-- `terms.html` — terms of use
+- `index.html` — Home / Product / Demo / Contact
+- `about.html` — company, founder, stage
+- `technology.html` — negotiation engine + AWS stack
+- `roadmap.html` — product roadmap
+- `trust.html` — trust & security
+- `privacy.html` / `terms.html` — legal
 - `CNAME` — GitHub Pages custom domain
 
 ## Local preview
