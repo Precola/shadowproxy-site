@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="About ShadowProxy — research-backed Negotiation / Strategy AI founded by Zhuoya Zhao. Mission, team, and company timeline.">
-    <title>About · ShadowProxy</title>
+    <meta name="description" content="About ShadowProxy — founded June 2026 by Zhuoya Zhao. Project stage, technical background, founding intent, and legal status (pre-incorporation).">
+    <title>About ShadowProxy</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -120,24 +120,24 @@
             line-height: 1.15;
         }
         .lead {
-            margin: 0 0 2.25rem;
+            margin: 0 0 2rem;
             color: var(--muted);
-            font-size: 1.1rem;
+            font-size: 1.08rem;
             max-width: 40rem;
         }
-        .meta-row {
+        .facts {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 0.75rem;
-            margin-bottom: 2.75rem;
+            margin-bottom: 2.5rem;
         }
-        .meta-card {
-            padding: 1rem 1.1rem;
+        .fact {
+            padding: 1.05rem 1.15rem;
             border: 1px solid var(--hairline);
             border-radius: 12px;
             background: #fff;
         }
-        .meta-card .k {
+        .fact .k {
             font-size: 0.75rem;
             font-weight: 600;
             color: var(--accent);
@@ -145,14 +145,22 @@
             letter-spacing: 0.04em;
             margin-bottom: 0.35rem;
         }
-        .meta-card .v {
-            font-size: 0.95rem;
+        .fact .v {
+            font-size: 0.98rem;
             font-weight: 550;
             letter-spacing: -0.01em;
+            color: var(--ink);
+        }
+        .fact .v span {
+            display: block;
+            margin-top: 0.25rem;
+            font-weight: 400;
+            font-size: 0.88rem;
+            color: var(--muted);
         }
         h2 {
-            margin: 2.5rem 0 0.85rem;
-            font-size: 1.35rem;
+            margin: 2.35rem 0 0.75rem;
+            font-size: 1.3rem;
             font-weight: 600;
             letter-spacing: -0.02em;
         }
@@ -162,53 +170,6 @@
             font-size: 1.02rem;
         }
         p strong { color: var(--ink); font-weight: 600; }
-        .mission-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-        }
-        .mission-card {
-            padding: 1.35rem 1.3rem;
-            border: 1px solid var(--hairline);
-            border-radius: 16px;
-            background: var(--canvas-soft);
-        }
-        .mission-card .label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-        .mission-card p {
-            margin: 0;
-            color: var(--ink);
-            font-size: 1rem;
-            line-height: 1.55;
-        }
-        .values {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.75rem;
-            margin: 1rem 0 0.5rem;
-        }
-        .value {
-            padding: 1.1rem 1.05rem;
-            border: 1px solid var(--hairline);
-            border-radius: 12px;
-            background: #fff;
-        }
-        .value h3 {
-            margin: 0 0 0.35rem;
-            font-size: 0.98rem;
-            font-weight: 600;
-        }
-        .value p {
-            margin: 0;
-            font-size: 0.88rem;
-        }
         .founder {
             display: grid;
             grid-template-columns: auto 1fr;
@@ -219,6 +180,7 @@
             border-radius: 18px;
             background: #fff;
             box-shadow: var(--shadow);
+            margin-bottom: 0.75rem;
         }
         .avatar {
             width: 72px;
@@ -230,7 +192,6 @@
             place-items: center;
             font-weight: 600;
             font-size: 1.15rem;
-            letter-spacing: -0.02em;
         }
         .founder h3 {
             margin: 0 0 0.2rem;
@@ -272,54 +233,37 @@
         .links a {
             font-size: 0.85rem;
             font-weight: 550;
-            color: var(--ink);
             border: 1px solid var(--hairline);
             background: var(--canvas-soft);
             padding: 0.4rem 0.75rem;
             border-radius: var(--radius-pill);
         }
         .links a:hover { background: #fff; }
-        .timeline {
-            display: grid;
-            gap: 0.65rem;
-            margin-top: 0.75rem;
-        }
-        .tl {
-            display: grid;
-            grid-template-columns: 7rem 1fr;
-            gap: 1rem;
-            padding: 1rem 1.15rem;
-            border: 1px solid var(--hairline);
+        .note {
+            padding: 0.95rem 1.1rem;
             border-radius: 12px;
-            background: #fff;
-        }
-        .tl.now {
-            border-color: rgba(16,163,127,0.35);
-            background: linear-gradient(180deg, var(--accent-soft), #fff 70%);
-        }
-        .tl .when {
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-        .tl strong {
-            display: block;
-            margin-bottom: 0.2rem;
-            font-size: 0.98rem;
-        }
-        .tl span {
+            background: var(--canvas-soft);
+            border: 1px solid var(--hairline);
             color: var(--muted);
-            font-size: 0.9rem;
+            font-size: 0.92rem;
+            margin: 0 0 0.5rem;
         }
-        .stage {
-            padding: 1.1rem 1.2rem;
+        .legal {
+            padding: 1.25rem 1.3rem;
+            border: 1px solid var(--hairline);
+            border-radius: 16px;
+            background: var(--canvas-soft);
+        }
+        .legal p { margin: 0 0 0.75rem; }
+        .legal p:last-child { margin: 0; }
+        .stage-box {
+            padding: 1.15rem 1.25rem;
             border-radius: 12px;
             background: var(--accent-soft);
             color: #0d5c48;
             font-size: 0.95rem;
-            margin-top: 1rem;
         }
-        .stage a {
+        .stage-box a {
             color: #0d5c48;
             text-decoration: underline;
             text-underline-offset: 2px;
@@ -339,9 +283,8 @@
         footer nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
         footer a:hover { color: var(--ink); }
         @media (max-width: 700px) {
-            .meta-row, .mission-grid, .values { grid-template-columns: 1fr; }
+            .facts { grid-template-columns: 1fr; }
             .founder { grid-template-columns: 1fr; }
-            .tl { grid-template-columns: 1fr; }
             .nav a:not(.primary) { display: none; }
         }
     </style>
@@ -361,69 +304,58 @@
     </header>
 
     <main>
-        <div class="eyebrow"><i></i> About us</div>
-        <h1>A research-backed negotiation engine for builders who underprice themselves</h1>
+        <div class="eyebrow"><i></i> About ShadowProxy</div>
+        <h1>About ShadowProxy</h1>
         <p class="lead">
-            ShadowProxy turns multi-agent reinforcement learning and game theory into
-            rehearsal software for high-stakes conversations—so technical founders can
-            price, sell, and defend value with a clearer next move.
+            ShadowProxy is a Negotiation / Strategy AI project: multi-agent simulation
+            that helps technical founders rehearse pricing, sales, and deal conversations
+            before they walk into the room.
         </p>
 
-        <div class="meta-row">
-            <div class="meta-card">
-                <div class="k">Founded</div>
+        <div class="facts">
+            <div class="fact">
+                <div class="k">Project founded</div>
                 <div class="v">June 2026</div>
             </div>
-            <div class="meta-card">
-                <div class="k">Stage</div>
-                <div class="v">Early prototype</div>
+            <div class="fact">
+                <div class="k">Current stage</div>
+                <div class="v">Early prototype<span>No public customers or paid users yet</span></div>
             </div>
-            <div class="meta-card">
-                <div class="k">Entity</div>
-                <div class="v">Pre-incorporation</div>
+            <div class="fact">
+                <div class="k">Team</div>
+                <div class="v">Founder-led<span>Zhuoya Zhao · Founder / CTO (sole founder today)</span></div>
+            </div>
+            <div class="fact">
+                <div class="k">Legal entity</div>
+                <div class="v">Not yet incorporated<span>Operating as ShadowProxy / pre-incorporation</span></div>
             </div>
         </div>
 
-        <h2>Dedicated to shaping better deal rooms</h2>
-        <div class="mission-grid">
-            <article class="mission-card">
-                <div class="label">Mission</div>
-                <p>Help technical founders and deal teams rehearse high-stakes negotiations before capital and reputation are on the table.</p>
-            </article>
-            <article class="mission-card">
-                <div class="label">Purpose</div>
-                <p>Put simulation-grade strategy in the hands of people closest to the product—so better work is not undersold in the room that matters.</p>
-            </article>
-        </div>
+        <h2>Why this project exists</h2>
+        <p>
+            Many strong technical builders struggle in the conversations that set the value of their work—
+            pricing a product, selling to a counterpart, defending terms on a term sheet.
+            They know the technology; they do not always have a structured way to rehearse the room.
+        </p>
+        <p>
+            ShadowProxy was started to give those people a <strong>simulation-backed rehearsal</strong>:
+            describe the negotiation, explore likely counters with multi-agent search, and leave with
+            ranked next moves—so better products are not underpriced or undersold.
+        </p>
 
-        <h2>How we work</h2>
-        <div class="values">
-            <article class="value">
-                <h3>Seek truth</h3>
-                <p>No fake logos or inflated traction. Early stage means early-stage claims.</p>
-            </article>
-            <article class="value">
-                <h3>Technical depth</h3>
-                <p>Simulation first; language models narrate. Strategy is earned in the search.</p>
-            </article>
-            <article class="value">
-                <h3>Execution focus</h3>
-                <p>Ship the rehearsal loop, learn with design partners, then harden for beta.</p>
-            </article>
-        </div>
-
-        <h2>Leadership</h2>
+        <h2>Founder &amp; team</h2>
+        <p class="note">
+            We do not list a larger headcount. Today ShadowProxy is founder-led.
+            Additional teammates will be named here when they join.
+        </p>
         <article class="founder">
             <div class="avatar" aria-hidden="true">ZZ</div>
             <div>
                 <h3>Zhuoya Zhao</h3>
                 <p class="role">Founder / CTO</p>
-                <ul class="creds">
-                    <li>Research in <strong>multi-agent reinforcement learning</strong> and <strong>game theory</strong></li>
-                    <li>PhD work affiliated with the Institute of Zoology, Chinese Academy of Sciences</li>
-                    <li>Continued MARL / game-theory research at the University of Ottawa</li>
-                    <li>Building the ShadowProxy Simulation Engine for practical negotiation briefs</li>
-                </ul>
+                <p style="margin-bottom:0.85rem;font-size:0.95rem;">
+                    Builds the ShadowProxy Simulation Engine and owns product and technical direction.
+                </p>
                 <div class="links">
                     <a href="https://www.linkedin.com/in/zhuoya-zhao-3a82912aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                     <a href="https://github.com/Precola" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -432,47 +364,54 @@
             </div>
         </article>
 
-        <h2>Company timeline</h2>
-        <div class="timeline">
-            <div class="tl">
-                <div class="when">June 2026</div>
-                <div>
-                    <strong>Founded</strong>
-                    <span>ShadowProxy begins as Negotiation / Strategy AI · operating pre-incorporation.</span>
-                </div>
-            </div>
-            <div class="tl now">
-                <div class="when">Now</div>
-                <div>
-                    <strong>Early prototype</strong>
-                    <span>Public site, waitlist, simulation-backed briefs. No paid users yet.</span>
-                </div>
-            </div>
-            <div class="tl">
-                <div class="when">Next</div>
-                <div>
-                    <strong>Design partners</strong>
-                    <span>Closed pilots with technical founders and BD leads on real deals.</span>
-                </div>
-            </div>
-            <div class="tl">
-                <div class="when">Later</div>
-                <div>
-                    <strong>Private beta → GA</strong>
-                    <span>Accounts, hardened AWS data plane, incorporation. See <a href="roadmap.html" style="color:var(--ink);text-decoration:underline;text-underline-offset:2px;">roadmap</a>.</span>
-                </div>
-            </div>
+        <h2>Technical background</h2>
+        <ul class="creds">
+            <li>Research focus: <strong>multi-agent reinforcement learning (MARL)</strong> and <strong>game theory</strong></li>
+            <li>PhD-period work affiliated with the Institute of Zoology, Chinese Academy of Sciences</li>
+            <li>Continued this research direction at the University of Ottawa</li>
+            <li>Applies that stack to negotiation rehearsal: adversarial agents, simulated deal paths, ranked briefs</li>
+        </ul>
+        <p>
+            Deeper engine and AWS architecture notes:
+            <a href="technology.html" style="color:var(--ink);text-decoration:underline;text-underline-offset:2px;">Technology</a>.
+        </p>
+
+        <h2>Current development stage</h2>
+        <p class="stage-box">
+            <strong>Early prototype.</strong>
+            The marketing site and waitlist are live. We are preparing design-partner pilots.
+            There are no public customers and no paid users yet.
+            Product roadmap:
+            <a href="roadmap.html">prototype → design partners → private beta → GA</a>.
+        </p>
+
+        <h2>Company registration &amp; legal subject</h2>
+        <div class="legal">
+            <p>
+                <strong>ShadowProxy is not yet a registered company.</strong>
+                There is no incorporation jurisdiction or legal entity name to list at this time.
+            </p>
+            <p>
+                The project <strong>operates as ShadowProxy / pre-incorporation</strong>,
+                contacting the public via <strong>shadowproxy.space</strong> and
+                <strong>intelligence@shadowproxy.space</strong>.
+            </p>
+            <p>
+                Company registration is planned as we move from prototype toward private beta;
+                this page will be updated with the legal name and registered location when that happens.
+                We will not invent registration details in the meantime.
+            </p>
         </div>
 
-        <p class="stage">
-            We are early on purpose: product and site are live for early access;
-            customer case studies will replace internal examples when pilots produce them.
-            Diligence email: <a href="mailto:intelligence@shadowproxy.space">intelligence@shadowproxy.space</a>
+        <h2>Contact</h2>
+        <p>
+            For waitlist, demos, partnerships, or diligence:
+            <a href="mailto:intelligence@shadowproxy.space" style="color:var(--ink);text-decoration:underline;text-underline-offset:2px;">intelligence@shadowproxy.space</a>
         </p>
     </main>
 
     <footer>
-        <p>© ShadowProxy · Founded June 2026</p>
+        <p>© ShadowProxy · Founded June 2026 · Pre-incorporation</p>
         <nav>
             <a href="index.html">Home</a>
             <a href="roadmap.html">Roadmap</a>
