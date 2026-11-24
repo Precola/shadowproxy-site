@@ -1,6 +1,6 @@
 # shadowproxy-site
 
-Marketing site for **ShadowProxy** — a negotiation strategy assistant powered by multi-agent simulation.
+Marketing site for **ShadowProxy** — Negotiation / Strategy AI powered by the ShadowProxy Simulation Engine (MARL + game theory).
 
 Live: [shadowproxy.space](https://shadowproxy.space)
 

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="How ShadowProxy uses AWS for MARL training, multi-agent simulation, inference, and negotiation data pipelines.">
-    <title>Technology · ShadowProxy</title>
+    <meta name="description" content="ShadowProxy Simulation Engine — multi-agent negotiation simulation with game-theoretic utilities, ranked briefs, and AWS-backed train/sim/infer.">
+    <title>Technology · ShadowProxy Simulation Engine</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -217,6 +217,62 @@
             margin-bottom: 0.2rem;
             font-weight: 600;
         }
+        .specs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin: 0 0 2rem;
+        }
+        .spec {
+            padding: 1.15rem 1.1rem;
+            border: 1px solid var(--hairline);
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: var(--shadow);
+        }
+        .spec .v {
+            font-size: 1.45rem;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.25rem;
+        }
+        .spec .l { font-size: 0.85rem; color: var(--muted); }
+        .lifecycle {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.65rem;
+            margin: 0 0 1.5rem;
+        }
+        .life {
+            padding: 1rem 0.95rem;
+            border: 1px solid var(--hairline);
+            border-radius: 12px;
+            background: var(--canvas-soft);
+        }
+        .life .n {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.35rem;
+        }
+        .life h3 {
+            margin: 0 0 0.35rem;
+            font-size: 0.98rem;
+            font-weight: 600;
+        }
+        .life p { margin: 0; font-size: 0.85rem; color: var(--muted); }
+        .boundary {
+            padding: 1.1rem 1.2rem;
+            border: 1px solid var(--hairline);
+            border-radius: 12px;
+            background: #fff;
+            margin-bottom: 2.25rem;
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+        .boundary strong { color: var(--ink); }
         .security {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -233,6 +289,9 @@
             display: block;
             color: var(--ink);
             margin-bottom: 0.25rem;
+        }
+        @media (max-width: 800px) {
+            .specs, .lifecycle { grid-template-columns: 1fr; }
         }
         footer {
             max-width: var(--max);
@@ -267,27 +326,65 @@
     </header>
 
     <main>
-        <div class="eyebrow"><i></i> Negotiation / Strategy AI · AWS plan</div>
-        <h1>How we use AWS</h1>
+        <div class="eyebrow"><i></i> ShadowProxy Simulation Engine</div>
+        <h1>Negotiation simulation infrastructure for high-stakes deals</h1>
         <p class="lead">
-            ShadowProxy is a simulation-heavy product: train agents, run large negotiation
-            trees, serve ranked briefs, and keep deal context secure. Below is the
-            architecture we are building toward for AWS Activate.
+            A named engine—not a chat wrapper. Multi-agent rollouts under game-theoretic utilities
+            produce ranked briefs. Cloud layers below are how we train, fan out sims, and serve results on AWS.
         </p>
-        <div class="plan-note">
-            Status: architecture &amp; roadmap (not a claim that every service is already in production).
-            Use this page in your AWS application as the intended stack; update phases as you ship.
+
+        <div class="specs">
+            <div class="spec">
+                <div class="v">50k+</div>
+                <div class="l">paths explored per scenario</div>
+            </div>
+            <div class="spec">
+                <div class="v">3</div>
+                <div class="l">ranked branches in every brief</div>
+            </div>
+            <div class="spec">
+                <div class="v">~40 min</div>
+                <div class="l">target time to a usable brief</div>
+            </div>
         </div>
 
-        <h2>Negotiation engine</h2>
-        <p class="section-intro">
-            Before the cloud map: the product loop is a constrained multi-agent simulation.
-            Agents play offer / counter / walk-away paths under game-theoretic utilities;
-            the orchestrator aggregates rollouts into a ranked brief (primary move, push path, walk-away).
-            LLMs may narrate the brief; they do not replace the simulation layer.
+        <h2>Lifecycle of a run</h2>
+        <p class="section-intro">Every scenario moves through four states—same idea as a machine lifecycle, for deals.</p>
+        <div class="lifecycle">
+            <div class="life">
+                <div class="n">01</div>
+                <h3>Describe</h3>
+                <p>Goals, constraints, counterparties, BATNA.</p>
+            </div>
+            <div class="life">
+                <div class="n">02</div>
+                <h3>Simulate</h3>
+                <p>Agents play offer / counter / walk-away paths.</p>
+            </div>
+            <div class="life">
+                <div class="n">03</div>
+                <h3>Rank</h3>
+                <p>Orchestrator scores paths by utility and risk.</p>
+            </div>
+            <div class="life">
+                <div class="n">04</div>
+                <h3>Brief</h3>
+                <p>Primary, push, and walk-away moves—human-readable.</p>
+            </div>
+        </div>
+
+        <p class="boundary">
+            <strong>Hard boundary:</strong> LLMs may narrate the brief.
+            They do not replace the simulation layer. Strategy comes from constrained multi-agent search,
+            not from asking a model to “be a good negotiator.”
         </p>
 
-        <h2>System layers</h2>
+        <div class="plan-note">
+            AWS status: architecture &amp; roadmap (not a claim that every service is already in production).
+            Use this page in Activate as the intended stack; update phases as you ship.
+        </div>
+
+        <h2>How we use AWS</h2>
         <p class="section-intro">Four jobs the cloud must do well—mapped to concrete AWS services.</p>
         <div class="stack">
             <article class="layer">
@@ -402,16 +499,17 @@
 
         <h2>One paragraph you can paste into AWS Activate</h2>
         <p class="section-intro" style="color: var(--ink); background: var(--canvas-soft); border: 1px solid var(--hairline); border-radius: 12px; padding: 1.1rem 1.2rem;">
-            ShadowProxy is a Negotiation / Strategy AI that uses multi-agent reinforcement
-            learning to simulate high-stakes deals. We plan to run MARL training on Amazon
-            SageMaker, large-scale negotiation rollouts on AWS Batch/ECS, online inference via
-            SageMaker Endpoints and Amazon Bedrock, and a secured S3 + Glue + Aurora/DynamoDB
-            pipeline for scenario data—with KMS and IAM from day one.
+            ShadowProxy’s Simulation Engine uses multi-agent reinforcement learning and
+            game-theoretic utilities to rehearse high-stakes negotiations and emit ranked briefs.
+            We plan MARL training on Amazon SageMaker, large-scale rollouts on AWS Batch/ECS,
+            online inference via SageMaker Endpoints and Amazon Bedrock, and a secured
+            S3 + Glue + Aurora/DynamoDB pipeline—with KMS and IAM from day one.
+            LLMs narrate; they do not replace the simulation layer.
         </p>
     </main>
 
     <footer>
-        <p>© ShadowProxy</p>
+        <p>© ShadowProxy · Founded June 2026</p>
         <nav style="display:flex;gap:1.25rem;">
             <a href="index.html">Home</a>
             <a href="about.html">About</a>

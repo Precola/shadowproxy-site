@@ -270,15 +270,68 @@
         .product {
             max-width: var(--max);
             margin: 0 auto;
-            padding: 0 1.5rem 4.5rem;
+            padding: 0 1.5rem 3.5rem;
             animation: rise 0.85s 0.12s ease both;
         }
+
+        .demo-head {
+            max-width: var(--max);
+            margin: 0 auto 1.35rem;
+        }
+
+        .demo-head h2 {
+            margin: 0 0 0.5rem;
+            font-size: clamp(1.5rem, 3vw, 1.9rem);
+            font-weight: 600;
+            letter-spacing: -0.03em;
+        }
+
+        .demo-head p {
+            margin: 0;
+            color: var(--muted);
+            max-width: 36rem;
+            font-size: 1.02rem;
+        }
+
+        .demo-head a {
+            color: var(--ink);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .io-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 0.75rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .io-box {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--hairline);
+            border-radius: 12px;
+            background: #fff;
+        }
+
+        .io-box strong {
+            display: block;
+            color: var(--ink);
+            font-size: 0.78rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .io-arrow { font-weight: 600; color: var(--accent); }
 
         .product-frame {
             background: var(--canvas-soft);
             border: 1px solid var(--hairline);
             border-radius: 22px;
-            padding: 1rem;
+            padding: 1.15rem;
             box-shadow: var(--shadow);
         }
 
@@ -287,9 +340,46 @@
             border: 1px solid var(--hairline);
             border-radius: 16px;
             overflow: hidden;
-            min-height: 320px;
+            min-height: 380px;
             display: grid;
-            grid-template-columns: 200px 1fr;
+            grid-template-columns: 220px 1fr;
+        }
+
+        .engine-strip {
+            max-width: var(--max);
+            margin: 0 auto 1rem;
+            padding: 0 1.5rem 3rem;
+        }
+
+        .engine-strip .strip-head {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 0.75rem;
+            align-items: end;
+            margin-bottom: 1rem;
+        }
+
+        .engine-strip h2 {
+            margin: 0;
+            font-size: clamp(1.4rem, 3vw, 1.75rem);
+            font-weight: 600;
+            letter-spacing: -0.03em;
+        }
+
+        .engine-strip .strip-head p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+            max-width: 28rem;
+        }
+
+        .engine-strip .strip-link {
+            font-size: 0.9rem;
+            font-weight: 550;
+            color: var(--ink);
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
 
         .sidebar {
@@ -752,7 +842,8 @@
 
         @media (max-width: 860px) {
             .nav a:not(.nav-primary) { display: none; }
-            .steps, .use-cases, .method, .trust-metrics, .case { grid-template-columns: 1fr; }
+            .steps, .use-cases, .method, .trust-metrics, .case, .io-row { grid-template-columns: 1fr; }
+            .io-arrow { display: none; }
             .product-window { grid-template-columns: 1fr; }
             .sidebar { display: none; }
             .hero { padding-top: 3.5rem; }
@@ -780,52 +871,54 @@
     <main id="top">
         <section class="hero">
             <div class="category"><span class="dot" aria-hidden="true"></span> Negotiation / Strategy AI</div>
-            <h1>Walk into the room with a clearer next move.</h1>
+            <h1>Rehearse the deal. Walk in with the next move.</h1>
             <p class="hero-lead">
-                ShadowProxy is negotiation strategy software—not a VPN.
-                Multi-agent simulations rehearse your deal before you do,
-                so founders and deal teams see likely counters and choose a stronger path.
+                Describe the negotiation. ShadowProxy’s Simulation Engine explores the room—
+                then returns ranked moves you can use. Not a VPN. Not a chatbot that “acts diplomatic.”
             </p>
 
             <form class="composer" id="waitlist-form" action="mailto:intelligence@shadowproxy.space?subject=Waitlist%20request%20—%20ShadowProxy" method="get" enctype="text/plain">
                 <input
                     id="composer-input"
-                    type="email"
+                    type="text"
                     name="body"
                     required
-                    autocomplete="email"
-                    placeholder="What negotiation are you preparing for?"
-                    aria-label="Your email or negotiation context"
+                    autocomplete="off"
+                    placeholder="Describe the negotiation you want to rehearse…"
+                    aria-label="Negotiation context"
                 >
-                <button type="submit" aria-label="Join waitlist">
+                <button type="submit" aria-label="Start with this scenario">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M5 12h14M13 6l6 6-6 6"/>
                     </svg>
                 </button>
             </form>
 
-            <div class="chips" aria-label="Example prompts">
-                <button type="button" class="chip" data-fill="Series A term sheet — defending dilution">Series A term sheet</button>
-                <button type="button" class="chip" data-fill="Enterprise partnership pricing negotiation">Partnership pricing</button>
-                <button type="button" class="chip" data-fill="Market entry against an incumbent">Market entry</button>
+            <div class="chips" aria-label="Start with a scenario">
+                <button type="button" class="chip" data-fill="Series A term sheet — defending dilution against a 25% open">Start: Series A term sheet</button>
+                <button type="button" class="chip" data-fill="Enterprise partnership — pricing and exclusivity with a larger buyer">Start: Partnership pricing</button>
+                <button type="button" class="chip" data-fill="Market entry against an incumbent — capacity and price response">Start: Market entry</button>
             </div>
-            <p class="fine-print">Strategy AI for high-stakes conversations · Early access by email</p>
+            <p class="fine-print">Early access · We’ll follow up by email at intelligence@shadowproxy.space</p>
         </section>
 
         <section class="product" id="demo" aria-label="Product demo">
-            <div class="section-inner" style="max-width:var(--max);margin:0 auto 1.25rem;padding:0;">
-                <div class="section-head" style="margin-bottom:1.25rem;">
-                    <h2 style="margin:0 0 0.5rem;font-size:clamp(1.4rem,3vw,1.75rem);font-weight:600;letter-spacing:-0.03em;">Demo preview</h2>
-                    <p style="margin:0;color:var(--muted);max-width:36rem;">
-                        A static walkthrough of the product loop. For a live session on your deal,
-                        <a href="#contact" style="color:var(--ink);text-decoration:underline;text-underline-offset:2px;">book a 15-min demo</a>.
-                    </p>
-                </div>
+            <div class="demo-head">
+                <h2>See what you get</h2>
+                <p>
+                    Type a scenario → get a ranked brief. This is a static product stage.
+                    For a live run on your deal, <a href="#contact">book a 15-min demo</a>.
+                </p>
+            </div>
+            <div class="io-row" aria-hidden="true">
+                <div class="io-box"><strong>You describe</strong> Investor wants 25% for $4M. We targeted 18%.</div>
+                <div class="io-arrow">→</div>
+                <div class="io-box"><strong>You get</strong> Primary / If they push / Walk-away — with rationale</div>
             </div>
             <div class="product-frame">
                 <div class="product-window">
                     <aside class="sidebar">
-                        <div class="side-label">Simulations</div>
+                        <div class="side-label">Scenarios</div>
                         <div class="side-item active">Series A · dilution</div>
                         <div class="side-item">Partner exclusivity</div>
                         <div class="side-item">Acquirer walk-away</div>
@@ -847,65 +940,13 @@
             </div>
         </section>
 
-        <section class="section" id="product">
-            <div class="section-head">
-                <h2>Product — from situation to strategy</h2>
-                <p>One calm loop — describe the deal, let agents pressure-test it, leave with options you can use.</p>
-            </div>
-            <div class="steps">
-                <article class="step">
-                    <div class="step-num">1</div>
-                    <h3>Describe the deal</h3>
-                    <p>Goals, constraints, counterparties, and what “good” looks like on your side.</p>
-                </article>
-                <article class="step">
-                    <div class="step-num">2</div>
-                    <h3>Simulate the room</h3>
-                    <p>Agents explore negotiation paths and surface counters you might miss under pressure.</p>
-                </article>
-                <article class="step">
-                    <div class="step-num">3</div>
-                    <h3>Leave with next moves</h3>
-                    <p>Ranked options, risk callouts, and talking points for the real conversation.</p>
-                </article>
-            </div>
-        </section>
-
-        <section class="section" id="use-cases">
-            <div class="section-head">
-                <h2>Built for high-stakes conversations</h2>
-                <p>Same engine, different rooms — each use case ends with a concrete deliverable.</p>
-            </div>
-            <div class="use-cases">
-                <article class="use">
-                    <div class="tag">Founders</div>
-                    <h3>Fundraising &amp; term sheets</h3>
-                    <p>Pressure-test valuation, dilution, and board terms against likely investor pushback.</p>
-                    <div class="out">You get walk-away lines and counter-sequences.</div>
-                </article>
-                <article class="use">
-                    <div class="tag">BD &amp; partnerships</div>
-                    <h3>Commercial negotiation</h3>
-                    <p>Model pricing and exclusivity before you sit down with a larger counterpart.</p>
-                    <div class="out">You get offer ladders and BATNA-aware fallbacks.</div>
-                </article>
-                <article class="use">
-                    <div class="tag">Deal teams</div>
-                    <h3>M&amp;A &amp; market entry</h3>
-                    <p>Rehearse adversarial scenarios before capital and reputation are committed.</p>
-                    <div class="out">You get scenario maps with ranked moves.</div>
-                </article>
-            </div>
-        </section>
-
-        <section class="section" id="proof">
-            <div class="section-head">
-                <h2>Early proof, honestly labeled</h2>
-                <p>
-                    We don’t have public customer case studies yet.
-                    Until design-partner pilots close, we show engine metrics and
-                    one worked example from internal simulations—not fabricated logos.
-                </p>
+        <section class="engine-strip" id="engine">
+            <div class="strip-head">
+                <div>
+                    <h2>ShadowProxy Simulation Engine</h2>
+                    <p>Measurable loop—not marketing adjectives. Specs from our internal harness.</p>
+                </div>
+                <a class="strip-link" href="technology.html">Full technology →</a>
             </div>
             <div class="trust-metrics">
                 <div class="metric">
@@ -921,18 +962,78 @@
                     <div class="label">ranked move branches in each brief</div>
                 </div>
             </div>
+        </section>
+
+        <section class="section" id="product">
+            <div class="section-head">
+                <h2>Build your rehearsal in 3 steps</h2>
+                <p>Same clarity as “describe → shape → go live”—for negotiations.</p>
+            </div>
+            <div class="steps">
+                <article class="step">
+                    <div class="step-num">1</div>
+                    <h3>Describe</h3>
+                    <p>Goals, constraints, counterparties, and what “good” looks like.</p>
+                </article>
+                <article class="step">
+                    <div class="step-num">2</div>
+                    <h3>Simulate</h3>
+                    <p>Agents pressure-test offer paths under game-theoretic utilities.</p>
+                </article>
+                <article class="step">
+                    <div class="step-num">3</div>
+                    <h3>Act</h3>
+                    <p>Leave with primary, push, and walk-away moves for the real room.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="use-cases">
+            <div class="section-head">
+                <h2>Start with a high-stakes scenario</h2>
+                <p>Pick a room. Each card ends with a concrete deliverable.</p>
+            </div>
+            <div class="use-cases">
+                <article class="use">
+                    <div class="tag">Start here</div>
+                    <h3>Series A term sheet</h3>
+                    <p>Pressure-test valuation, dilution, and board terms against investor pushback.</p>
+                    <div class="out">Deliverable: walk-away lines + counter-sequences</div>
+                </article>
+                <article class="use">
+                    <div class="tag">Start here</div>
+                    <h3>Partnership pricing</h3>
+                    <p>Model exclusivity and price ladders before you face a larger counterpart.</p>
+                    <div class="out">Deliverable: offer ladders + BATNA fallbacks</div>
+                </article>
+                <article class="use">
+                    <div class="tag">Start here</div>
+                    <h3>Market entry</h3>
+                    <p>Rehearse incumbent reactions on capacity and price before you commit.</p>
+                    <div class="out">Deliverable: scenario map + ranked moves</div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="proof">
+            <div class="section-head">
+                <h2>Early proof, honestly labeled</h2>
+                <p>
+                    No public customers yet. Until design-partner pilots close, we show one
+                    worked example from internal simulations—not fabricated logos.
+                </p>
+            </div>
             <article class="case">
                 <div>
                     <div class="case-badge">Worked example · Internal simulation</div>
                     <h3>Series A dilution fight (anonymized scenario)</h3>
                     <p>
                         Seed-stage SaaS founder. Investor opens at 25% for $4M;
-                        founder target was 18%. ShadowProxy ran adversarial agent play
-                        across term-sheet dimensions (ownership, board, pro-rata, pool).
+                        founder target was 18%. The engine ran adversarial play across
+                        ownership, board, pro-rata, and pool.
                     </p>
                     <p class="note">
-                        Not a customer testimonial. Numbers below are from our internal
-                        simulation harness. Real pilot outcomes will replace this section.
+                        Not a customer testimonial. Real pilot outcomes will replace this section.
                     </p>
                 </div>
                 <ul class="case-results">
@@ -942,45 +1043,22 @@
                     </li>
                     <li>
                         <strong>Offer quality</strong>
-                        <span>Surfaced a 20% + observer-seat path that beat a hard 18% line in most runs</span>
+                        <span>20% + observer-seat path beat a hard 18% line in most runs</span>
                     </li>
                     <li>
                         <strong>Blind spots</strong>
-                        <span>Flagged option-pool shift and walk-away runway risk the baseline plan missed</span>
+                        <span>Flagged option-pool shift and walk-away runway risk</span>
                     </li>
                 </ul>
             </article>
         </section>
 
         <section class="section" id="method">
-            <div class="section-head">
-                <h2>Game theory, stress-tested by agents</h2>
-            </div>
-            <div class="method">
-                <div>
-                    <p>
-                        Classical consulting often leans on precedent. ShadowProxy combines
-                        non-cooperative game theory with multi-agent reinforcement learning
-                        to explore negotiation spaces at scale.
-                    </p>
-                    <p>
-                        <strong>You stay in control of the human conversation.</strong>
-                        We supply the rehearsal and the ranked options —
-                        more paths explored, clearer tradeoffs, fewer blind spots.
-                    </p>
-                </div>
-                <ul class="audience">
-                    <li>Founders closing seed–Series B rounds</li>
-                    <li>BD leads negotiating enterprise partnerships</li>
-                    <li>Operators preparing market-entry pricing fights</li>
-                    <li>Advisors who need a second brain before closed-door talks</li>
-                </ul>
-            </div>
-            <div class="aws-teaser" style="margin-top: 2rem;">
+            <div class="aws-teaser">
                 <p>
-                    <strong>How we use AWS.</strong>
-                    Training, multi-agent simulation, inference, and the deal-data pipeline
-                    are planned on AWS from day one—see the stack map.
+                    <strong>LLMs narrate. Simulation decides.</strong>
+                    Game theory + MARL explore the space; you stay in control of the human conversation.
+                    Train / sim / infer / data on AWS—see the stack.
                 </p>
                 <a class="btn btn-light" href="technology.html">View technology</a>
             </div>
@@ -1037,7 +1115,6 @@
             chip.addEventListener('click', () => {
                 input.value = chip.dataset.fill || chip.textContent;
                 input.focus();
-                input.type = 'text';
             });
         });
 
