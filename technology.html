@@ -237,6 +237,19 @@
             margin-bottom: 0.25rem;
         }
         .spec .l { font-size: 0.85rem; color: var(--muted); }
+        .spec .h {
+            display: block;
+            margin-top: 0.4rem;
+            font-size: 0.75rem;
+            line-height: 1.4;
+            color: #9a9aa6;
+        }
+        .specs-note {
+            margin: -1rem 0 2rem;
+            font-size: 0.85rem;
+            line-height: 1.55;
+            color: #9a9aa6;
+        }
         .lifecycle {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -336,17 +349,24 @@
         <div class="specs">
             <div class="spec">
                 <div class="v">50k+</div>
-                <div class="l">paths explored per scenario</div>
+                <div class="l">paths per scenario run</div>
+                <span class="h">Single-task budget in the internal harness—not cumulative site traffic</span>
             </div>
             <div class="spec">
                 <div class="v">3</div>
-                <div class="l">ranked branches in every brief</div>
+                <div class="l">ranked branches in each brief</div>
+                <span class="h">Current prototype output format: Primary · Push · Walk-away</span>
             </div>
             <div class="spec">
                 <div class="v">~40 min</div>
-                <div class="l">target time to a usable brief</div>
+                <div class="l">product target to a usable brief</div>
+                <span class="h">Design goal—not a live-customer average</span>
             </div>
         </div>
+        <p class="specs-note">
+            These are R&amp;D / prototype figures from offline development runs, not commercial operating metrics.
+            Update them when design-partner pilots produce measured production stats.
+        </p>
 
         <h2>Lifecycle of a run</h2>
         <p class="section-intro">Every scenario moves through four states—same idea as a machine lifecycle, for deals.</p>
