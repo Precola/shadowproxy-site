@@ -807,6 +807,22 @@
             color: var(--muted);
         }
 
+        .metric .hint {
+            display: block;
+            margin-top: 0.45rem;
+            font-size: 0.75rem;
+            line-height: 1.4;
+            color: #9a9aa6;
+        }
+
+        .metrics-note {
+            margin: 0;
+            font-size: 0.82rem;
+            line-height: 1.55;
+            color: #9a9aa6;
+            max-width: 48rem;
+        }
+
         .case {
             display: grid;
             grid-template-columns: 1.15fr 0.85fr;
@@ -1158,24 +1174,33 @@
             <div class="strip-head">
                 <div>
                     <h2>ShadowProxy Simulation Engine</h2>
-                    <p>Measurable loop—not marketing adjectives. Specs from our internal harness.</p>
+                    <p>Internal R&amp;D / prototype metrics—not commercial operating KPIs.</p>
                 </div>
                 <a class="strip-link" href="technology.html">Full technology →</a>
             </div>
             <div class="trust-metrics">
                 <div class="metric">
                     <div class="value">50k+</div>
-                    <div class="label">paths explored per scenario</div>
+                    <div class="label">paths per scenario run</div>
+                    <span class="hint">Single-task budget in our internal harness (not lifetime cumulative traffic)</span>
                 </div>
                 <div class="metric">
                     <div class="value">~40 min</div>
-                    <div class="label">target time to a usable brief</div>
+                    <div class="label">product target to a usable brief</div>
+                    <span class="hint">Design goal for the rehearsal loop—not a published average from live customers</span>
                 </div>
                 <div class="metric">
                     <div class="value">3</div>
-                    <div class="label">ranked move branches in each brief</div>
+                    <div class="label">ranked branches in each brief</div>
+                    <span class="hint">Implemented brief format today: Primary · If they push · Walk-away</span>
                 </div>
             </div>
+            <p class="metrics-note">
+                <strong style="color:var(--muted);font-weight:550;">How to read these numbers:</strong>
+                50k+ is a per-run simulation budget measured in our research / prototype environment
+                (offline harness on development machines), not verified production volume or revenue metrics.
+                ~40 minutes is a product target. The 3-branch brief structure is what the current prototype outputs.
+            </p>
         </section>
 
         <section class="section" id="product">
