@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ShadowProxy is a negotiation strategy assistant. Multi-agent simulations help you rehearse high-stakes deals and walk in with a clearer next move.">
+    <title>ShadowProxy · Negotiation strategy assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --canvas: #ffffff;
+            --canvas-soft: #f7f7f8;
+            --ink: #0d0d0d;
+            --muted: #6e6e80;
+            --hairline: #e5e5e8;
+            --accent: #10a37f;
+            --accent-soft: #e7f6f1;
+            --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+            --radius: 14px;
+            --radius-pill: 999px;
+            --font: 'Instrument Sans', sans-serif;
+            --max: 1080px;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            background: var(--canvas);
+            color: var(--ink);
+            font-family: var(--font);
+            font-size: 16px;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* Soft Muse-like atmosphere — not flat white */
+        .atmosphere {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(16, 163, 127, 0.09), transparent 55%),
+                radial-gradient(ellipse 45% 40% at 100% 20%, rgba(180, 190, 220, 0.12), transparent 50%),
+                radial-gradient(ellipse 40% 35% at 0% 60%, rgba(245, 230, 210, 0.18), transparent 50%),
+                var(--canvas);
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.5rem;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.25s;
+        }
+
+        header.scrolled { border-bottom-color: var(--hairline); }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-weight: 600;
+            font-size: 1.05rem;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-mark {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            background: var(--ink);
+            position: relative;
+        }
+
+        .brand-mark::after {
+            content: "";
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            border-right-color: transparent;
+            transform: rotate(-45deg);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .nav a {
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 500;
+            padding: 0.45rem 0.75rem;
+            border-radius: var(--radius-pill);
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--ink);
+            background: var(--canvas-soft);
+        }
+
+        .nav .nav-primary {
+            margin-left: 0.35rem;
+            background: var(--ink);
+            color: #fff !important;
+            padding: 0.5rem 1rem;
+        }
+
+        .nav .nav-primary:hover { background: #2a2a2a; }
+
+        .hero {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 5.5rem 1.5rem 3.5rem;
+            text-align: center;
+            animation: rise 0.7s ease both;
+        }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin: 0 0 1.15rem;
+            padding: 0.35rem 0.75rem;
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius-pill);
+            background: rgba(255,255,255,0.8);
+            font-size: 0.82rem;
+            font-weight: 550;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+        }
+
+        .category .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .hero h1 {
+            margin: 0 0 1rem;
+            font-size: clamp(2.1rem, 5vw, 3.15rem);
+            font-weight: 600;
+            letter-spacing: -0.035em;
+            line-height: 1.12;
+        }
+
+        .hero-lead {
+            margin: 0 auto 2rem;
+            max-width: 34rem;
+            color: var(--muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* ChatGPT-style composer */
+        .composer {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            width: 100%;
+            max-width: 560px;
+            margin: 0 auto 1rem;
+            padding: 0.55rem 0.55rem 0.55rem 1.15rem;
+            background: var(--canvas);
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius-pill);
+            box-shadow: var(--shadow);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .composer:focus-within {
+            border-color: #cfcfd4;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.08);
+        }
+
+        .composer input {
+            flex: 1;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            font: inherit;
+            font-size: 0.98rem;
+            color: var(--ink);
+            min-width: 0;
+        }
+
+        .composer input::placeholder { color: #a0a0ab; }
+
+        .composer button {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border: 0;
+            border-radius: 50%;
+            background: var(--ink);
+            color: #fff;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transition: transform 0.15s, background 0.2s;
+        }
+
+        .composer button:hover { background: #2a2a2a; transform: scale(1.04); }
+
+        .composer button svg { width: 16px; height: 16px; }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .chip {
+            border: 1px solid var(--hairline);
+            background: rgba(255,255,255,0.7);
+            color: var(--muted);
+            font: inherit;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 0.45rem 0.85rem;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .chip:hover {
+            color: var(--ink);
+            border-color: #d0d0d5;
+            background: #fff;
+        }
+
+        .fine-print {
+            margin-top: 1.25rem;
+            font-size: 0.8rem;
+            color: #9a9aa6;
+        }
+
+        .fine-print a {
+            color: var(--muted);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        /* Product panel — ChatGPT screenshot energy */
+        .product {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 1.5rem 4.5rem;
+            animation: rise 0.85s 0.12s ease both;
+        }
+
+        .product-frame {
+            background: var(--canvas-soft);
+            border: 1px solid var(--hairline);
+            border-radius: 22px;
+            padding: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .product-window {
+            background: #fff;
+            border: 1px solid var(--hairline);
+            border-radius: 16px;
+            overflow: hidden;
+            min-height: 320px;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+        }
+
+        .sidebar {
+            border-right: 1px solid var(--hairline);
+            padding: 1rem 0.85rem;
+            background: #fafafa;
+        }
+
+        .sidebar .side-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #9a9aa6;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0 0.5rem 0.65rem;
+        }
+
+        .side-item {
+            padding: 0.55rem 0.65rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 0.2rem;
+        }
+
+        .side-item.active {
+            background: #fff;
+            color: var(--ink);
+            font-weight: 500;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+        .chat-pane {
+            padding: 1.4rem 1.5rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+
+        .msg {
+            max-width: 92%;
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
+        .msg.user {
+            align-self: flex-end;
+            background: var(--canvas-soft);
+            padding: 0.75rem 1rem;
+            border-radius: 18px 18px 6px 18px;
+            color: var(--ink);
+        }
+
+        .msg.assistant {
+            align-self: flex-start;
+            color: var(--ink);
+        }
+
+        .msg.assistant .role {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--muted);
+        }
+
+        .msg.assistant .role i {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: inline-block;
+        }
+
+        .msg ul {
+            margin: 0.4rem 0 0;
+            padding-left: 1.1rem;
+            color: var(--muted);
+        }
+
+        .msg li { margin: 0.2rem 0; }
+
+        .section {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        .section-head {
+            max-width: 36rem;
+            margin-bottom: 2.25rem;
+        }
+
+        .section-head h2 {
+            margin: 0 0 0.65rem;
+            font-size: clamp(1.6rem, 3vw, 2rem);
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+
+        .section-head p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .step {
+            padding: 1.35rem 1.25rem;
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius);
+            background: rgba(255,255,255,0.65);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.85rem;
+        }
+
+        .step h3 {
+            margin: 0 0 0.45rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .step p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .use-cases {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .use {
+            padding: 1.5rem 1.35rem;
+            border-radius: var(--radius);
+            background: var(--canvas-soft);
+            border: 1px solid transparent;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .use:hover {
+            background: #fff;
+            border-color: var(--hairline);
+        }
+
+        .use .tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+        }
+
+        .use h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.08rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .use p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .use .out {
+            margin-top: 1rem;
+            padding-top: 0.9rem;
+            border-top: 1px solid var(--hairline);
+            font-size: 0.88rem;
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        .method {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        .method p {
+            color: var(--muted);
+            margin: 0 0 1rem;
+            font-size: 1.02rem;
+        }
+
+        .method p strong { color: var(--ink); font-weight: 600; }
+
+        .audience {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .audience li {
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--hairline);
+            border-radius: 12px;
+            background: #fff;
+            font-size: 0.92rem;
+            color: var(--muted);
+        }
+
+        .trust-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .metric {
+            padding: 1.25rem 1.15rem;
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius);
+            background: #fff;
+            text-align: center;
+        }
+
+        .metric .value {
+            font-size: 1.55rem;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric .label {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .case {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 1.25rem;
+            padding: 1.5rem;
+            border: 1px solid var(--hairline);
+            border-radius: 18px;
+            background: var(--canvas-soft);
+        }
+
+        .case-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+        }
+
+        .case h3 {
+            margin: 0 0 0.55rem;
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .case p {
+            margin: 0 0 0.75rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .case .note {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #9a9aa6;
+            line-height: 1.5;
+        }
+
+        .case-results {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .case-results li {
+            padding: 0.85rem 1rem;
+            background: #fff;
+            border: 1px solid var(--hairline);
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+
+        .case-results strong {
+            display: block;
+            margin-bottom: 0.15rem;
+            font-weight: 600;
+        }
+
+        .case-results span { color: var(--muted); }
+
+        .aws-teaser {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.25rem 1.4rem;
+            border: 1px solid var(--hairline);
+            border-radius: 16px;
+            background: #fff;
+        }
+
+        .aws-teaser p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+            max-width: 36rem;
+        }
+
+        .aws-teaser strong { color: var(--ink); }
+
+        .cta-band {
+            max-width: var(--max);
+            margin: 1rem auto 4rem;
+            padding: 2.75rem 1.5rem 2.5rem;
+            text-align: center;
+            border-radius: 24px;
+            background:
+                radial-gradient(ellipse 70% 80% at 50% 0%, rgba(16,163,127,0.1), transparent 60%),
+                var(--canvas-soft);
+            border: 1px solid var(--hairline);
+        }
+
+        .cta-band h2 {
+            margin: 0 0 0.5rem;
+            font-size: clamp(1.5rem, 3vw, 1.9rem);
+            font-weight: 600;
+            letter-spacing: -0.03em;
+        }
+
+        .cta-band .cta-lead {
+            margin: 0 auto 0.35rem;
+            max-width: 30rem;
+            color: var(--ink);
+            font-size: 1.02rem;
+            font-weight: 500;
+        }
+
+        .cta-band .cta-sub {
+            margin: 0 auto 1.75rem;
+            max-width: 28rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .cta-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .cta-divider {
+            margin: 0 auto 1rem;
+            color: #9a9aa6;
+            font-size: 0.8rem;
+        }
+
+        .cta-mail {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .cta-mail a {
+            color: var(--ink);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 1.25rem;
+            border-radius: var(--radius-pill);
+            font: inherit;
+            font-size: 0.95rem;
+            font-weight: 550;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .btn:hover { transform: translateY(-1px); }
+
+        .btn-dark {
+            background: var(--ink);
+            color: #fff;
+        }
+
+        .btn-dark:hover { background: #2a2a2a; }
+
+        .btn-light {
+            background: #fff;
+            border-color: var(--hairline);
+            color: var(--ink);
+        }
+
+        .btn-light:hover { background: var(--canvas-soft); }
+
+        footer {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--hairline);
+            color: #9a9aa6;
+            font-size: 0.85rem;
+        }
+
+        footer nav {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        footer a:hover { color: var(--ink); }
+
+        @media (max-width: 860px) {
+            .nav a:not(.nav-primary) { display: none; }
+            .steps, .use-cases, .method, .trust-metrics, .case { grid-template-columns: 1fr; }
+            .product-window { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .hero { padding-top: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <header id="site-header">
+        <a class="brand" href="#top">
+            <span class="brand-mark" aria-hidden="true"></span>
+            ShadowProxy
+        </a>
+        <nav class="nav">
+            <a href="#how">How it works</a>
+            <a href="#proof">Proof</a>
+            <a href="technology.html">Technology</a>
+            <a class="nav-primary" href="#waitlist">Get early access</a>
+        </nav>
+    </header>
+
+    <main id="top">
+        <section class="hero">
+            <div class="category"><span class="dot" aria-hidden="true"></span> Negotiation / Strategy AI</div>
+            <h1>Walk into the room with a clearer next move.</h1>
+            <p class="hero-lead">
+                ShadowProxy is negotiation strategy software—not a VPN.
+                Multi-agent simulations rehearse your deal before you do,
+                so founders and deal teams see likely counters and choose a stronger path.
+            </p>
+
+            <form class="composer" id="waitlist-form" action="mailto:intelligence@shadowproxy.space?subject=Waitlist%20request%20—%20ShadowProxy" method="get" enctype="text/plain">
+                <input
+                    id="composer-input"
+                    type="email"
+                    name="body"
+                    required
+                    autocomplete="email"
+                    placeholder="What negotiation are you preparing for?"
+                    aria-label="Your email or negotiation context"
+                >
+                <button type="submit" aria-label="Join waitlist">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 12h14M13 6l6 6-6 6"/>
+                    </svg>
+                </button>
+            </form>
+
+            <div class="chips" aria-label="Example prompts">
+                <button type="button" class="chip" data-fill="Series A term sheet — defending dilution">Series A term sheet</button>
+                <button type="button" class="chip" data-fill="Enterprise partnership pricing negotiation">Partnership pricing</button>
+                <button type="button" class="chip" data-fill="Market entry against an incumbent">Market entry</button>
+            </div>
+            <p class="fine-print">Strategy AI for high-stakes conversations · Early access by email</p>
+        </section>
+
+        <section class="product" aria-label="Product preview">
+            <div class="product-frame">
+                <div class="product-window">
+                    <aside class="sidebar">
+                        <div class="side-label">Simulations</div>
+                        <div class="side-item active">Series A · dilution</div>
+                        <div class="side-item">Partner exclusivity</div>
+                        <div class="side-item">Acquirer walk-away</div>
+                    </aside>
+                    <div class="chat-pane">
+                        <div class="msg user">Investor wants 25% for $4M. We were targeting 18%. What should I push next?</div>
+                        <div class="msg assistant">
+                            <div class="role"><i></i> ShadowProxy</div>
+                            Across 50k simulated paths, anchoring at 20% with a board-seat trade
+                            beats a hard 18% line in most investor temperaments.
+                            <ul>
+                                <li><strong>Primary:</strong> Offer 20% + observer seat, protect pro-rata.</li>
+                                <li><strong>If they push:</strong> 22% with option pool refresh from their side.</li>
+                                <li><strong>Walk-away:</strong> Below 15% post-money runway under 14 months.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="how">
+            <div class="section-head">
+                <h2>From situation to strategy</h2>
+                <p>One calm loop — describe the deal, let agents pressure-test it, leave with options you can use.</p>
+            </div>
+            <div class="steps">
+                <article class="step">
+                    <div class="step-num">1</div>
+                    <h3>Describe the deal</h3>
+                    <p>Goals, constraints, counterparties, and what “good” looks like on your side.</p>
+                </article>
+                <article class="step">
+                    <div class="step-num">2</div>
+                    <h3>Simulate the room</h3>
+                    <p>Agents explore negotiation paths and surface counters you might miss under pressure.</p>
+                </article>
+                <article class="step">
+                    <div class="step-num">3</div>
+                    <h3>Leave with next moves</h3>
+                    <p>Ranked options, risk callouts, and talking points for the real conversation.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="use-cases">
+            <div class="section-head">
+                <h2>Built for high-stakes conversations</h2>
+                <p>Same engine, different rooms — each use case ends with a concrete deliverable.</p>
+            </div>
+            <div class="use-cases">
+                <article class="use">
+                    <div class="tag">Founders</div>
+                    <h3>Fundraising &amp; term sheets</h3>
+                    <p>Pressure-test valuation, dilution, and board terms against likely investor pushback.</p>
+                    <div class="out">You get walk-away lines and counter-sequences.</div>
+                </article>
+                <article class="use">
+                    <div class="tag">BD &amp; partnerships</div>
+                    <h3>Commercial negotiation</h3>
+                    <p>Model pricing and exclusivity before you sit down with a larger counterpart.</p>
+                    <div class="out">You get offer ladders and BATNA-aware fallbacks.</div>
+                </article>
+                <article class="use">
+                    <div class="tag">Deal teams</div>
+                    <h3>M&amp;A &amp; market entry</h3>
+                    <p>Rehearse adversarial scenarios before capital and reputation are committed.</p>
+                    <div class="out">You get scenario maps with ranked moves.</div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="proof">
+            <div class="section-head">
+                <h2>Early proof, honestly labeled</h2>
+                <p>
+                    We don’t have public customer case studies yet.
+                    Until design-partner pilots close, we show engine metrics and
+                    one worked example from internal simulations—not fabricated logos.
+                </p>
+            </div>
+            <div class="trust-metrics">
+                <div class="metric">
+                    <div class="value">50k+</div>
+                    <div class="label">paths explored per scenario</div>
+                </div>
+                <div class="metric">
+                    <div class="value">~40 min</div>
+                    <div class="label">target time to a usable brief</div>
+                </div>
+                <div class="metric">
+                    <div class="value">3</div>
+                    <div class="label">ranked move branches in each brief</div>
+                </div>
+            </div>
+            <article class="case">
+                <div>
+                    <div class="case-badge">Worked example · Internal simulation</div>
+                    <h3>Series A dilution fight (anonymized scenario)</h3>
+                    <p>
+                        Seed-stage SaaS founder. Investor opens at 25% for $4M;
+                        founder target was 18%. ShadowProxy ran adversarial agent play
+                        across term-sheet dimensions (ownership, board, pro-rata, pool).
+                    </p>
+                    <p class="note">
+                        Not a customer testimonial. Numbers below are from our internal
+                        simulation harness. Real pilot outcomes will replace this section.
+                    </p>
+                </div>
+                <ul class="case-results">
+                    <li>
+                        <strong>Prep cycle</strong>
+                        <span>Unstructured research (~2 days) → structured brief in under an hour</span>
+                    </li>
+                    <li>
+                        <strong>Offer quality</strong>
+                        <span>Surfaced a 20% + observer-seat path that beat a hard 18% line in most runs</span>
+                    </li>
+                    <li>
+                        <strong>Blind spots</strong>
+                        <span>Flagged option-pool shift and walk-away runway risk the baseline plan missed</span>
+                    </li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="section" id="method">
+            <div class="section-head">
+                <h2>Game theory, stress-tested by agents</h2>
+            </div>
+            <div class="method">
+                <div>
+                    <p>
+                        Classical consulting often leans on precedent. ShadowProxy combines
+                        non-cooperative game theory with multi-agent reinforcement learning
+                        to explore negotiation spaces at scale.
+                    </p>
+                    <p>
+                        <strong>You stay in control of the human conversation.</strong>
+                        We supply the rehearsal and the ranked options —
+                        more paths explored, clearer tradeoffs, fewer blind spots.
+                    </p>
+                </div>
+                <ul class="audience">
+                    <li>Founders closing seed–Series B rounds</li>
+                    <li>BD leads negotiating enterprise partnerships</li>
+                    <li>Operators preparing market-entry pricing fights</li>
+                    <li>Advisors who need a second brain before closed-door talks</li>
+                </ul>
+            </div>
+            <div class="aws-teaser" style="margin-top: 2rem;">
+                <p>
+                    <strong>How we use AWS.</strong>
+                    Training, multi-agent simulation, inference, and the deal-data pipeline
+                    are planned on AWS from day one—see the stack map.
+                </p>
+                <a class="btn btn-light" href="technology.html">View technology</a>
+            </div>
+        </section>
+
+        <section class="cta-band" id="waitlist">
+            <h2>Get early access</h2>
+            <p class="cta-lead">Tell us the negotiation you’re preparing for.</p>
+            <p class="cta-sub">We’ll follow up with next steps—or book a short product demo.</p>
+            <div class="cta-actions">
+                <a class="btn btn-dark" href="mailto:intelligence@shadowproxy.space?subject=Waitlist%20request%20—%20ShadowProxy">Join the waitlist</a>
+                <a class="btn btn-light" href="mailto:intelligence@shadowproxy.space?subject=Demo%20request%20—%20ShadowProxy">Book a 15-min demo</a>
+            </div>
+            <p class="cta-divider">Prefer email?</p>
+            <p class="cta-mail">
+                Write to <a href="mailto:intelligence@shadowproxy.space">intelligence@shadowproxy.space</a>
+                with your role and negotiation context.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© ShadowProxy · Negotiation / Strategy AI</p>
+        <nav>
+            <a href="technology.html">Technology</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="mailto:intelligence@shadowproxy.space">Contact</a>
+        </nav>
+    </footer>
+
+    <script>
+        const header = document.getElementById('site-header');
+        const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 8);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        const input = document.getElementById('composer-input');
+        document.querySelectorAll('.chip').forEach((chip) => {
+            chip.addEventListener('click', () => {
+                input.value = chip.dataset.fill || chip.textContent;
+                input.focus();
+                input.type = 'text';
+            });
+        });
+
+        document.getElementById('waitlist-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const value = input.value.trim();
+            const subject = encodeURIComponent('Waitlist request — ShadowProxy');
+            const body = encodeURIComponent(value || '(no details provided)');
+            window.location.href = `mailto:intelligence@shadowproxy.space?subject=${subject}&body=${body}`;
+        });
+    </script>
+</body>
+</html>

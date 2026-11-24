@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How ShadowProxy uses AWS for MARL training, multi-agent simulation, inference, and negotiation data pipelines.">
+    <title>Technology · ShadowProxy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --canvas: #ffffff;
+            --canvas-soft: #f7f7f8;
+            --ink: #0d0d0d;
+            --muted: #6e6e80;
+            --hairline: #e5e5e8;
+            --accent: #10a37f;
+            --accent-soft: #e7f6f1;
+            --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+            --radius: 14px;
+            --radius-pill: 999px;
+            --font: 'Instrument Sans', sans-serif;
+            --max: 900px;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: var(--canvas);
+            color: var(--ink);
+            font-family: var(--font);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: inherit; text-decoration: none; }
+        .atmosphere {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 70% 40% at 50% -5%, rgba(16,163,127,0.08), transparent 55%),
+                var(--canvas);
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.5rem;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--hairline);
+        }
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-weight: 600;
+        }
+        .brand-mark {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            background: var(--ink);
+            position: relative;
+        }
+        .brand-mark::after {
+            content: "";
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            border-right-color: transparent;
+            transform: rotate(-45deg);
+        }
+        .nav a {
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 500;
+            margin-left: 0.75rem;
+        }
+        .nav a:hover { color: var(--ink); }
+        .nav .primary {
+            background: var(--ink);
+            color: #fff !important;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-pill);
+        }
+        main {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.7rem;
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 550;
+            margin-bottom: 1rem;
+        }
+        .eyebrow i {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: inline-block;
+        }
+        h1 {
+            margin: 0 0 0.75rem;
+            font-size: clamp(1.9rem, 4vw, 2.5rem);
+            font-weight: 600;
+            letter-spacing: -0.035em;
+            line-height: 1.15;
+        }
+        .lead {
+            margin: 0 0 2.5rem;
+            color: var(--muted);
+            font-size: 1.08rem;
+            max-width: 38rem;
+        }
+        .plan-note {
+            padding: 1rem 1.15rem;
+            border-radius: 12px;
+            background: var(--accent-soft);
+            color: #0d5c48;
+            font-size: 0.9rem;
+            margin-bottom: 2.5rem;
+        }
+        h2 {
+            margin: 2.5rem 0 0.75rem;
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        h2:first-of-type { margin-top: 0; }
+        .section-intro {
+            margin: 0 0 1.15rem;
+            color: var(--muted);
+        }
+        .stack {
+            display: grid;
+            gap: 0.85rem;
+        }
+        .layer {
+            border: 1px solid var(--hairline);
+            border-radius: var(--radius);
+            padding: 1.2rem 1.25rem;
+            background: #fff;
+            box-shadow: var(--shadow);
+        }
+        .layer .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 0.75rem;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .layer h3 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+        .phase {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--accent);
+            background: var(--accent-soft);
+            padding: 0.2rem 0.5rem;
+            border-radius: var(--radius-pill);
+        }
+        .layer p {
+            margin: 0 0 0.65rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        .services span {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--ink);
+            background: var(--canvas-soft);
+            border: 1px solid var(--hairline);
+            padding: 0.28rem 0.55rem;
+            border-radius: 8px;
+        }
+        .roadmap {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 0.65rem;
+        }
+        .roadmap li {
+            padding: 0.95rem 1.1rem;
+            border: 1px solid var(--hairline);
+            border-radius: 12px;
+            background: var(--canvas-soft);
+            font-size: 0.92rem;
+            color: var(--muted);
+        }
+        .roadmap strong {
+            display: block;
+            color: var(--ink);
+            margin-bottom: 0.2rem;
+            font-weight: 600;
+        }
+        .security {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .security div {
+            padding: 1rem 1.1rem;
+            border: 1px solid var(--hairline);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        .security strong {
+            display: block;
+            color: var(--ink);
+            margin-bottom: 0.25rem;
+        }
+        footer {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 1.5rem;
+            border-top: 1px solid var(--hairline);
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            color: #9a9aa6;
+            font-size: 0.85rem;
+        }
+        footer a:hover { color: var(--ink); }
+        @media (max-width: 700px) {
+            .security { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <header>
+        <a class="brand" href="index.html">
+            <span class="brand-mark" aria-hidden="true"></span>
+            ShadowProxy
+        </a>
+        <nav class="nav">
+            <a href="index.html#proof">Proof</a>
+            <a href="index.html#waitlist" class="primary">Get early access</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="eyebrow"><i></i> Negotiation / Strategy AI · AWS plan</div>
+        <h1>How we use AWS</h1>
+        <p class="lead">
+            ShadowProxy is a simulation-heavy product: train agents, run large negotiation
+            trees, serve ranked briefs, and keep deal context secure. Below is the
+            architecture we are building toward for AWS Activate.
+        </p>
+        <div class="plan-note">
+            Status: architecture &amp; roadmap (not a claim that every service is already in production).
+            Use this page in your AWS application as the intended stack; update phases as you ship.
+        </div>
+
+        <h2>System layers</h2>
+        <p class="section-intro">Four jobs the cloud must do well—mapped to concrete AWS services.</p>
+        <div class="stack">
+            <article class="layer">
+                <div class="meta">
+                    <h3>1. Training</h3>
+                    <span class="phase">Phase 1–2</span>
+                </div>
+                <p>
+                    Train and fine-tune multi-agent RL policies for negotiation environments
+                    (offer sequences, BATNA, multi-party games). Experiment tracking and
+                    checkpoint storage live next to the trainers.
+                </p>
+                <div class="services">
+                    <span>SageMaker Training</span>
+                    <span>SageMaker HyperPod / GPU instances</span>
+                    <span>S3 model artifacts</span>
+                    <span>CloudWatch metrics</span>
+                </div>
+            </article>
+            <article class="layer">
+                <div class="meta">
+                    <h3>2. Simulation</h3>
+                    <span class="phase">Phase 1</span>
+                </div>
+                <p>
+                    Fan out thousands–millions of synthetic negotiation rollouts per scenario.
+                    Batch jobs for deep search; streaming workers for interactive “what if” runs.
+                </p>
+                <div class="services">
+                    <span>AWS Batch</span>
+                    <span>ECS / Fargate</span>
+                    <span>SQS job queues</span>
+                    <span>ElastiCache (run state)</span>
+                </div>
+            </article>
+            <article class="layer">
+                <div class="meta">
+                    <h3>3. Inference</h3>
+                    <span class="phase">Phase 2</span>
+                </div>
+                <p>
+                    Serve briefs: ranked moves, risk flags, and chat-style explanations.
+                    Low-latency API for the product UI; optional larger models for narrative summary.
+                </p>
+                <div class="services">
+                    <span>SageMaker Endpoints</span>
+                    <span>Amazon Bedrock (summaries)</span>
+                    <span>API Gateway + Lambda</span>
+                    <span>CloudFront</span>
+                </div>
+            </article>
+            <article class="layer">
+                <div class="meta">
+                    <h3>4. Data pipeline</h3>
+                    <span class="phase">Phase 2–3</span>
+                </div>
+                <p>
+                    Ingest deal context, anonymize where needed, version scenarios, and feed
+                    eval / offline learning loops. Separate raw customer data from training corpora.
+                </p>
+                <div class="services">
+                    <span>S3 data lake</span>
+                    <span>AWS Glue</span>
+                    <span>Aurora / DynamoDB</span>
+                    <span>EventBridge</span>
+                    <span>KMS encryption</span>
+                </div>
+            </article>
+        </div>
+
+        <h2>Suggested build order (for Activate credits)</h2>
+        <ul class="roadmap">
+            <li>
+                <strong>Now · MVP sim loop</strong>
+                Single-region: Batch/ECS workers + S3 checkpoints + simple API.
+                Prove “describe deal → ranked moves” end-to-end.
+            </li>
+            <li>
+                <strong>Next · Train / eval on SageMaker</strong>
+                Move MARL training off laptops; log experiments; store reproducible artifacts.
+            </li>
+            <li>
+                <strong>Then · Product inference</strong>
+                Managed endpoints + Bedrock for explanations; CloudFront for the web app.
+            </li>
+            <li>
+                <strong>Later · Hardened data plane</strong>
+                Tenant isolation, KMS, audit logs, retention policies—needed before enterprise pilots.
+            </li>
+        </ul>
+
+        <h2>Security &amp; compliance posture</h2>
+        <p class="section-intro">What to write in the AWS application even before SOC 2.</p>
+        <div class="security">
+            <div>
+                <strong>Encryption</strong>
+                TLS in transit; S3/DB encryption at rest with KMS.
+            </div>
+            <div>
+                <strong>Access</strong>
+                IAM least privilege, no long-lived keys in clients, private subnets for workers.
+            </div>
+            <div>
+                <strong>Data handling</strong>
+                Deal text treated as sensitive; optional customer-managed keys later.
+            </div>
+            <div>
+                <strong>Policies live</strong>
+                <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> on the marketing site today.
+            </div>
+        </div>
+
+        <h2>One paragraph you can paste into AWS Activate</h2>
+        <p class="section-intro" style="color: var(--ink); background: var(--canvas-soft); border: 1px solid var(--hairline); border-radius: 12px; padding: 1.1rem 1.2rem;">
+            ShadowProxy is a Negotiation / Strategy AI that uses multi-agent reinforcement
+            learning to simulate high-stakes deals. We plan to run MARL training on Amazon
+            SageMaker, large-scale negotiation rollouts on AWS Batch/ECS, online inference via
+            SageMaker Endpoints and Amazon Bedrock, and a secured S3 + Glue + Aurora/DynamoDB
+            pipeline for scenario data—with KMS and IAM from day one.
+        </p>
+    </main>
+
+    <footer>
+        <p>© ShadowProxy</p>
+        <nav style="display:flex;gap:1.25rem;">
+            <a href="index.html">Home</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+        </nav>
+    </footer>
+</body>
+</html>
