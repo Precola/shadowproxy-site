@@ -327,23 +327,186 @@
 
         .io-arrow { font-weight: 600; color: var(--accent); }
 
-        .product-frame {
-            background: var(--canvas-soft);
-            border: 1px solid var(--hairline);
-            border-radius: 22px;
-            padding: 1.15rem;
-            box-shadow: var(--shadow);
+        .preview-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-soft);
+            padding: 0.28rem 0.65rem;
+            border-radius: var(--radius-pill);
+            margin-bottom: 1rem;
         }
 
-        .product-window {
-            background: #fff;
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .shot {
             border: 1px solid var(--hairline);
             border-radius: 16px;
+            background: #fff;
+            box-shadow: var(--shadow);
             overflow: hidden;
-            min-height: 380px;
-            display: grid;
-            grid-template-columns: 220px 1fr;
+            display: flex;
+            flex-direction: column;
+            min-height: 340px;
         }
+
+        .shot-chrome {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.65rem 0.85rem;
+            background: #f3f3f5;
+            border-bottom: 1px solid var(--hairline);
+            font-size: 0.72rem;
+            font-weight: 550;
+            color: var(--muted);
+        }
+
+        .shot-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .shot-dots i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d4d4d8;
+            display: block;
+        }
+
+        .shot-dots i:nth-child(1) { background: #ff5f57; }
+        .shot-dots i:nth-child(2) { background: #febc2e; }
+        .shot-dots i:nth-child(3) { background: #28c840; }
+
+        .shot-body {
+            padding: 0.95rem 1rem 1.1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .shot-step {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--accent);
+        }
+
+        .shot-body h3 {
+            margin: 0;
+            font-size: 0.98rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .shot-field {
+            border: 1px solid var(--hairline);
+            border-radius: 10px;
+            padding: 0.65rem 0.75rem;
+            background: var(--canvas-soft);
+            font-size: 0.8rem;
+            color: var(--muted);
+            line-height: 1.45;
+        }
+
+        .shot-field strong {
+            display: block;
+            color: var(--ink);
+            font-size: 0.72rem;
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .shot-row {
+            display: flex;
+            gap: 0.45rem;
+        }
+
+        .shot-pill {
+            flex: 1;
+            text-align: center;
+            font-size: 0.72rem;
+            font-weight: 550;
+            padding: 0.4rem 0.35rem;
+            border-radius: 8px;
+            background: #fff;
+            border: 1px solid var(--hairline);
+            color: var(--muted);
+        }
+
+        .shot-pill.on {
+            border-color: rgba(16,163,127,0.4);
+            background: var(--accent-soft);
+            color: #0d5c48;
+        }
+
+        .sim-bar {
+            height: 8px;
+            border-radius: 999px;
+            background: #e8e8ec;
+            overflow: hidden;
+        }
+
+        .sim-bar span {
+            display: block;
+            height: 100%;
+            width: 72%;
+            border-radius: 999px;
+            background: var(--accent);
+        }
+
+        .agent-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .agent {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            padding: 0.45rem 0.55rem;
+            border-radius: 8px;
+            border: 1px solid var(--hairline);
+            background: #fff;
+            color: var(--muted);
+        }
+
+        .agent b { color: var(--ink); font-weight: 550; }
+
+        .brief-card {
+            border: 1px solid var(--hairline);
+            border-radius: 10px;
+            padding: 0.55rem 0.65rem;
+            font-size: 0.78rem;
+            color: var(--muted);
+            background: #fff;
+        }
+
+        .brief-card.primary {
+            border-color: rgba(16,163,127,0.35);
+            background: var(--accent-soft);
+            color: #0d5c48;
+        }
+
+        .brief-card strong {
+            display: block;
+            color: var(--ink);
+            margin-bottom: 0.15rem;
+            font-size: 0.8rem;
+        }
+
+        .brief-card.primary strong { color: #0d5c48; }
 
         .engine-strip {
             max-width: var(--max);
@@ -842,10 +1005,8 @@
 
         @media (max-width: 860px) {
             .nav a:not(.nav-primary) { display: none; }
-            .steps, .use-cases, .method, .trust-metrics, .case, .io-row { grid-template-columns: 1fr; }
+            .steps, .use-cases, .method, .trust-metrics, .case, .io-row, .shot-grid { grid-template-columns: 1fr; }
             .io-arrow { display: none; }
-            .product-window { grid-template-columns: 1fr; }
-            .sidebar { display: none; }
             .hero { padding-top: 3.5rem; }
         }
     </style>
@@ -904,39 +1065,92 @@
 
         <section class="product" id="demo" aria-label="Product demo">
             <div class="demo-head">
-                <h2>See what you get</h2>
+                <h2>Series A case — product UI preview</h2>
                 <p>
-                    Type a scenario → get a ranked brief. This is a static product stage.
-                    For a live run on your deal, <a href="#contact">book a 15-min demo</a>.
+                    Investor opens at <strong style="color:var(--ink);font-weight:600;">25% for $4M</strong>;
+                    founder target is <strong style="color:var(--ink);font-weight:600;">18%</strong>.
+                    Three prototype screens show Describe → Simulate → Brief.
+                    For a live walkthrough, <a href="#contact">book a 15-min demo</a>.
                 </p>
+                <div class="preview-badge">Prototype UI preview · not a production screenshot</div>
             </div>
-            <div class="io-row" aria-hidden="true">
-                <div class="io-box"><strong>You describe</strong> Investor wants 25% for $4M. We targeted 18%.</div>
-                <div class="io-arrow">→</div>
-                <div class="io-box"><strong>You get</strong> Primary / If they push / Walk-away — with rationale</div>
-            </div>
-            <div class="product-frame">
-                <div class="product-window">
-                    <aside class="sidebar">
-                        <div class="side-label">Scenarios</div>
-                        <div class="side-item active">Series A · dilution</div>
-                        <div class="side-item">Partner exclusivity</div>
-                        <div class="side-item">Acquirer walk-away</div>
-                    </aside>
-                    <div class="chat-pane">
-                        <div class="msg user">Investor wants 25% for $4M. We were targeting 18%. What should I push next?</div>
-                        <div class="msg assistant">
-                            <div class="role"><i></i> ShadowProxy</div>
-                            Across 50k simulated paths, anchoring at 20% with a board-seat trade
-                            beats a hard 18% line in most investor temperaments.
-                            <ul>
-                                <li><strong>Primary:</strong> Offer 20% + observer seat, protect pro-rata.</li>
-                                <li><strong>If they push:</strong> 22% with option pool refresh from their side.</li>
-                                <li><strong>Walk-away:</strong> Below 15% post-money runway under 14 months.</li>
-                            </ul>
+
+            <div class="shot-grid">
+                <figure class="shot" aria-label="Describe screen mock">
+                    <div class="shot-chrome">
+                        <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                        ShadowProxy · Describe
+                    </div>
+                    <div class="shot-body">
+                        <div class="shot-step">Screen 01</div>
+                        <h3>Describe the deal</h3>
+                        <div class="shot-field">
+                            <strong>Scenario</strong>
+                            Series A term sheet · seed SaaS founder
+                        </div>
+                        <div class="shot-field">
+                            <strong>Investor open</strong>
+                            $4M for 25% ownership
+                        </div>
+                        <div class="shot-field">
+                            <strong>Founder target</strong>
+                            18% dilution · keep board control
+                        </div>
+                        <div class="shot-row">
+                            <div class="shot-pill on">Ownership</div>
+                            <div class="shot-pill on">Board</div>
+                            <div class="shot-pill">Pro-rata</div>
                         </div>
                     </div>
-                </div>
+                </figure>
+
+                <figure class="shot" aria-label="Simulate screen mock">
+                    <div class="shot-chrome">
+                        <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                        ShadowProxy · Simulate
+                    </div>
+                    <div class="shot-body">
+                        <div class="shot-step">Screen 02</div>
+                        <h3>Agents explore the room</h3>
+                        <div class="shot-field">
+                            <strong>Run status</strong>
+                            36,420 / 50,000 paths · ~72%
+                        </div>
+                        <div class="sim-bar" aria-hidden="true"><span></span></div>
+                        <div class="agent-list">
+                            <div class="agent"><b>Founder agent</b> defending 18%</div>
+                            <div class="agent"><b>Investor agent</b> anchoring 25%</div>
+                            <div class="agent"><b>Board agent</b> seat &amp; control trades</div>
+                        </div>
+                        <div class="shot-field">
+                            <strong>Emerging signal</strong>
+                            20% + observer seat beating hard 18% in most runs
+                        </div>
+                    </div>
+                </figure>
+
+                <figure class="shot" aria-label="Brief screen mock">
+                    <div class="shot-chrome">
+                        <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                        ShadowProxy · Brief
+                    </div>
+                    <div class="shot-body">
+                        <div class="shot-step">Screen 03</div>
+                        <h3>Ranked next moves</h3>
+                        <div class="brief-card primary">
+                            <strong>Primary · 20%</strong>
+                            Offer 20% + observer seat; protect pro-rata.
+                        </div>
+                        <div class="brief-card">
+                            <strong>If they push · 22%</strong>
+                            Option-pool refresh from their side.
+                        </div>
+                        <div class="brief-card">
+                            <strong>Walk-away</strong>
+                            Below 15% post-money if runway &lt; 14 months.
+                        </div>
+                    </div>
+                </figure>
             </div>
         </section>
 
@@ -1019,21 +1233,24 @@
             <div class="section-head">
                 <h2>Early proof, honestly labeled</h2>
                 <p>
-                    No public customers yet. Until design-partner pilots close, we show one
-                    worked example from internal simulations—not fabricated logos.
+                    No public customers yet. The Series A case above is shown as
+                    <strong style="color:var(--ink);font-weight:600;">Prototype UI preview</strong>
+                    (three screens)—not production screenshots or a customer testimonial.
                 </p>
             </div>
             <article class="case">
                 <div>
-                    <div class="case-badge">Worked example · Internal simulation</div>
-                    <h3>Series A dilution fight (anonymized scenario)</h3>
+                    <div class="case-badge">Worked example · Prototype UI + internal sim</div>
+                    <h3>Series A dilution fight</h3>
                     <p>
-                        Seed-stage SaaS founder. Investor opens at 25% for $4M;
-                        founder target was 18%. The engine ran adversarial play across
-                        ownership, board, pro-rata, and pool.
+                        Investor: $4M for 25%. Founder target: 18%.
+                        Preview UI walks Describe → Simulate → Brief, landing on a
+                        <strong style="color:var(--ink);font-weight:600;">20% + observer seat</strong>
+                        primary path, board-seat tradeoffs, and a walk-away line.
                     </p>
                     <p class="note">
-                        Not a customer testimonial. Real pilot outcomes will replace this section.
+                        <a href="#demo" style="color:var(--ink);text-decoration:underline;text-underline-offset:2px;">Jump to the three screens</a>.
+                        Real pilot outcomes will replace this section later.
                     </p>
                 </div>
                 <ul class="case-results">
