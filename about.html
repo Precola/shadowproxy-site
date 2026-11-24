@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="About ShadowProxy — founded June 2026 by Zhuoya Zhao. Project stage, technical background, founding intent, and legal status (pre-incorporation).">
+    <meta name="description" content="About ShadowProxy — founded June 2026. CEO Jinyu Fan and Founder/CTO Zhuoya Zhao. Project stage, background, and legal status (pre-incorporation).">
     <title>About ShadowProxy</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -170,6 +170,11 @@
             font-size: 1.02rem;
         }
         p strong { color: var(--ink); font-weight: 600; }
+        .founder-stack {
+            display: grid;
+            gap: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
         .founder {
             display: grid;
             grid-template-columns: auto 1fr;
@@ -180,7 +185,6 @@
             border-radius: 18px;
             background: #fff;
             box-shadow: var(--shadow);
-            margin-bottom: 0.75rem;
         }
         .avatar {
             width: 72px;
@@ -323,7 +327,7 @@
             </div>
             <div class="fact">
                 <div class="k">Team</div>
-                <div class="v">Founder-led<span>Zhuoya Zhao · Founder / CTO (sole founder today)</span></div>
+                <div class="v">2 founders<span>Jinyu Fan · CEO · Zhuoya Zhao · Founder / CTO</span></div>
             </div>
             <div class="fact">
                 <div class="k">Legal entity</div>
@@ -343,33 +347,48 @@
             ranked next moves—so better products are not underpriced or undersold.
         </p>
 
-        <h2>Founder &amp; team</h2>
+        <h2>Founding team</h2>
         <p class="note">
-            We do not list a larger headcount. Today ShadowProxy is founder-led.
-            Additional teammates will be named here when they join.
+            Two founders today. Additional teammates will be named here when they join—
+            we do not invent headcount.
         </p>
-        <article class="founder">
-            <div class="avatar" aria-hidden="true">ZZ</div>
-            <div>
-                <h3>Zhuoya Zhao</h3>
-                <p class="role">Founder / CTO</p>
-                <p style="margin-bottom:0.85rem;font-size:0.95rem;">
-                    Builds the ShadowProxy Simulation Engine and owns product and technical direction.
-                </p>
-                <div class="links">
-                    <a href="https://www.linkedin.com/in/zhuoya-zhao-3a82912aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                    <a href="https://github.com/Precola" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <div class="founder-stack">
+            <article class="founder">
+                <div class="avatar" aria-hidden="true">JF</div>
+                <div>
+                    <h3>Jinyu Fan</h3>
+                    <p class="role">CEO</p>
+                    <p style="margin-bottom:0.85rem;font-size:0.95rem;">
+                        Leads company direction and go-to-market for ShadowProxy.
+                    </p>
+                    <ul class="creds">
+                        <li>Graduate studies: <strong>University of Edinburgh</strong></li>
+                    </ul>
+                    <div class="links">
+                        <a href="mailto:jinyu.fan@beijing-aisi.ac.cn">Work email</a>
+                    </div>
                 </div>
-            </div>
-        </article>
-
-        <h2>Technical background</h2>
-        <ul class="creds">
-            <li>Research focus: <strong>multi-agent reinforcement learning (MARL)</strong> and <strong>game theory</strong></li>
-            <li>PhD-period work affiliated with the Institute of Automation, Chinese Academy of Sciences</li>
-            <li>Continued this research direction at the University of Ottawa</li>
-            <li>Applies that stack to negotiation rehearsal: adversarial agents, simulated deal paths, ranked briefs</li>
-        </ul>
+            </article>
+            <article class="founder">
+                <div class="avatar" aria-hidden="true">ZZ</div>
+                <div>
+                    <h3>Zhuoya Zhao</h3>
+                    <p class="role">Founder / CTO</p>
+                    <p style="margin-bottom:0.85rem;font-size:0.95rem;">
+                        Builds the ShadowProxy Simulation Engine and owns product and technical direction.
+                    </p>
+                    <ul class="creds">
+                        <li>Research focus: <strong>multi-agent reinforcement learning (MARL)</strong> and <strong>game theory</strong></li>
+                        <li>PhD-period work affiliated with the Institute of Automation, Chinese Academy of Sciences</li>
+                        <li>Continued this research direction at the University of Ottawa</li>
+                    </ul>
+                    <div class="links">
+                        <a href="https://www.linkedin.com/in/zhuoya-zhao-3a82912aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <a href="https://github.com/Precola" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    </div>
+                </div>
+            </article>
+        </div>
         <p>
             Deeper engine and AWS architecture notes:
             <a href="technology.html" style="color:var(--ink);text-decoration:underline;text-underline-offset:2px;">Technology</a>.
