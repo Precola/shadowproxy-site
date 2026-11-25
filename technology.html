@@ -399,28 +399,24 @@
             not from asking a model to “be a good negotiator.”
         </p>
 
-        <div class="plan-note">
-            Cloud status: planned architecture and build phases—not a claim that every service is already in production.
-        </div>
-
-        <h2>How we use AWS</h2>
-        <p class="section-intro">Four jobs the cloud must do well—mapped to concrete AWS services.</p>
+        <h2>Planned Cloud Architecture</h2>
+        <p class="section-intro">
+            Our proposed AWS infrastructure supports the development, testing, and future scaling
+            of ShadowProxy’s negotiation simulation platform.
+        </p>
         <div class="stack">
             <article class="layer">
                 <div class="meta">
-                    <h3>1. Training</h3>
+                    <h3>1. Model Training</h3>
                     <span class="phase">Phase 1–2</span>
                 </div>
                 <p>
-                    Train and fine-tune multi-agent RL policies for negotiation environments
-                    (offer sequences, BATNA, multi-party games). Experiment tracking and
-                    checkpoint storage live next to the trainers.
+                    Develop and evaluate multi-agent reinforcement learning models for negotiation scenarios.
                 </p>
                 <div class="services">
-                    <span>SageMaker Training</span>
-                    <span>SageMaker HyperPod / GPU instances</span>
-                    <span>S3 model artifacts</span>
-                    <span>CloudWatch metrics</span>
+                    <span>SageMaker</span>
+                    <span>Amazon S3</span>
+                    <span>CloudWatch</span>
                 </div>
             </article>
             <article class="layer">
@@ -429,14 +425,12 @@
                     <span class="phase">Phase 1</span>
                 </div>
                 <p>
-                    Fan out thousands–millions of synthetic negotiation rollouts per scenario.
-                    Batch jobs for deep search; streaming workers for interactive “what if” runs.
+                    Develop and test parallel negotiation simulations to evaluate alternative strategies and outcomes.
                 </p>
                 <div class="services">
                     <span>AWS Batch</span>
                     <span>ECS / Fargate</span>
-                    <span>SQS job queues</span>
-                    <span>ElastiCache (run state)</span>
+                    <span>Amazon SQS</span>
                 </div>
             </article>
             <article class="layer">
@@ -445,33 +439,31 @@
                     <span class="phase">Phase 2</span>
                 </div>
                 <p>
-                    Serve briefs: ranked moves, risk flags, and chat-style explanations.
-                    Low-latency API for the product UI; optional larger models for narrative summary.
+                    Generate strategy recommendations, risk assessments, and AI-assisted negotiation briefs.
                 </p>
                 <div class="services">
-                    <span>SageMaker Endpoints</span>
-                    <span>Amazon Bedrock (summaries)</span>
-                    <span>API Gateway + Lambda</span>
-                    <span>CloudFront</span>
+                    <span>Amazon Bedrock</span>
+                    <span>API Gateway</span>
+                    <span>AWS Lambda</span>
                 </div>
             </article>
             <article class="layer">
                 <div class="meta">
-                    <h3>4. Data pipeline</h3>
+                    <h3>4. Data Pipeline</h3>
                     <span class="phase">Phase 2–3</span>
                 </div>
                 <p>
-                    Ingest deal context, anonymize where needed, version scenarios, and feed
-                    eval / offline learning loops. Separate raw customer data from training corpora.
+                    Establish secure data storage, scenario management, and evaluation workflows.
                 </p>
                 <div class="services">
-                    <span>S3 data lake</span>
-                    <span>AWS Glue</span>
-                    <span>Aurora / DynamoDB</span>
-                    <span>EventBridge</span>
-                    <span>KMS encryption</span>
+                    <span>Amazon S3</span>
+                    <span>DynamoDB</span>
+                    <span>AWS KMS</span>
                 </div>
             </article>
+        </div>
+        <div class="plan-note">
+            This architecture is currently in the planning stage and may evolve as product development progresses.
         </div>
 
         <h2>Infrastructure Development Roadmap</h2>
@@ -520,10 +512,10 @@
         <p class="section-intro" style="color: var(--ink); background: var(--canvas-soft); border: 1px solid var(--hairline); border-radius: 12px; padding: 1.1rem 1.2rem;">
             ShadowProxy’s Simulation Engine uses multi-agent reinforcement learning and
             game-theoretic utilities to rehearse high-stakes negotiations and emit ranked briefs.
-            We plan MARL training on Amazon SageMaker, large-scale rollouts on AWS Batch/ECS,
-            online inference via SageMaker Endpoints and Amazon Bedrock, and a secured
-            S3 + Glue + Aurora/DynamoDB pipeline—with KMS and IAM from day one.
-            LLMs narrate; they do not replace the simulation layer.
+            Planned cloud path: model training on Amazon SageMaker with S3 and CloudWatch;
+            parallel simulations on AWS Batch, ECS/Fargate, and Amazon SQS; inference and briefs
+            via Amazon Bedrock, API Gateway, and AWS Lambda; data and security on Amazon S3,
+            DynamoDB, and AWS KMS. LLMs assist narration; they do not replace the simulation layer.
         </p>
     </main>
 
